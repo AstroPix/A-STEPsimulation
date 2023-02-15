@@ -1,0 +1,22 @@
+Version         1
+Geometry        ../Geometry/ACDLargeSidePanelGeom.geo.setup
+
+
+# Physics list
+PhysicsListEM                        LivermorePol
+
+
+# Output formats
+StoreSimulationInfo                  all
+
+
+# Run & source parameters
+Run CosmicMuons
+CosmicMuons.FileName         ACDLargeSidePanel_CosmicMuons
+CosmicMuons.Triggers             1000000
+
+CosmicMuons.Source FarFieldFileZenithDependent
+FarFieldFileZenithDependent.ParticleType        9
+FarFieldFileZenithDependent.Beam                FarFieldFileZenithDependent CosmicMuons.dat
+FarFieldFileZenithDependent.Spectrum            Mono 325000
+FarFieldFileZenithDependent.Flux                5.6588424E-5
