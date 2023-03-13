@@ -1,0 +1,143 @@
+///////////////////////////////////////////////////
+// Geometry file for the A-STEP detector         //
+// Authors: Sayaka Suzuki (Hiroshima University) //
+//          Yusuke Suda   (Hiroshima University) //
+///////////////////////////////////////////////////
+
+
+SurroundingSphere 18.0  0.0  0.0  0.0  18.0
+//SurroundingSphere 8.0  0.0  0.0  0.0  8.0
+//ShowSurroundingSphere true
+Include /home/yusuke/software/ComPair/Geometry_AstroPix/materials/Materials.geo
+
+Volume World
+World.Material Vacuum
+World.Visibility 1
+World.Color 0
+World.Shape BRIK 500. 500. 500.
+World.Mother 0
+
+// Single layer (QuadChip 0.05 cm thick + PCB 0.16 cm thick), 7 cm x 7 cm x 0.21 cm
+Volume SingleLayer
+SingleLayer.Material Vacuum
+SingleLayer.Visibility 0
+SingleLayer.Shape BOX 3.5 3.5 0.185
+SingleLayer.Mother World
+
+// One Quad Chip, 4 cm x 4 cm x 0.05 cm
+// Horizontal: 1.75*2 + 0.064*4 + 0.069 = 3.825 cm
+// Vertical:   1.75*2 + 0.064*2 + 0.15*2 + 0.018 = 3.946 cm
+Volume QuadChip
+QuadChip.Material Vacuum
+QuadChip.Visibility 0
+QuadChip.Shape BOX 2.0 2.0 0.025
+QuadChip.Mother SingleLayer
+
+// PCB
+Volume PCBoard
+PCBoard.Material PCB
+PCBoard.Color 3
+PCBoard.Visibility 1
+PCBoard.Shape Box 3.5 3.5 0.08
+PCBoard.Position 0.0 0.0 -0.105
+PCBoard.Mother SingleLayer
+
+// One AstroPix v3 chip, 35 x 35 pixels, 1.75 cm x 1.75 cm x 0.05 cm
+// Pixel size 0.05 cm x 0.05 cm x 0.05 cm
+// Here we're only counting the active area     
+Volume APS
+APS.Material Silicon
+APS.Visibility 1
+APS.Color 2
+APS.Shape BOX 0.875 0.875 0.025
+
+// X+: 1.75/2 + 0.064 + 0.069/2 = +0.9735 cm
+// X-: 1.75/2 + 0.064 + 0.069/2 = -0.9735 cm
+// Y+:  1.75/2 + 0.15 + 0.018/2 = +1.034 cm
+// Y-: 1.75/2 + 0.064 + 0.018/2 = -0.948 cm
+For I 2 -0.9735 1.947
+    For J 2 1.034 -1.982
+        APS.Copy APS_%I_%J
+        APS_%I_%J.Position $I $J 0.0
+        APS_%I_%J.Mother QuadChip
+    Done
+Done  
+
+
+Strip2D         SStrip
+SStrip.SensitiveVolume  APS
+SStrip.DetectorVolume   QuadChip
+
+// StructuralPitch
+// X: 0.064*2+0.069 = 0.197 cm
+// Y: 0.064 + 0.15 + 0.018 = 0.232 cm
+SStrip.StructuralPitch 0.197 0.232 0.0
+
+// StructuralOffset
+// X: 2 - (1.75 + 0.064*2 + 0.069/2) = 0.0875 cm
+// Y: 2 - (1.75 + 0.064 + 0.15 + 0.018/2) = 0.027 cm
+SStrip.StructuralOffset 0.0875 0.027 0.0
+
+SStrip.Offset          0.0 0.0
+
+// Total number of strips in x and y assuming 0.05 cm pixel size
+SStrip.StripNumber 35 35
+
+SStrip.NoiseThreshold       0.0001
+SStrip.TriggerThreshold     0.0001
+
+// Measured values from V2LoResChip
+SStrip.EnergyResolution Gauss 14.4 14.4 1.47
+SStrip.EnergyResolution Gauss 17.8 17.8 0.94
+SStrip.EnergyResolution Gauss 22.2 22.2 1.62
+SStrip.EnergyResolution Gauss 31.0 31.0 1.65
+SStrip.EnergyResolution Gauss 59.5 59.5 1.30
+
+
+// 3-layer detector
+Volume SiTower
+SiTower.Material Vacuum
+SiTower.Visibility 0
+SiTower.Shape BRIK 3.5 3.5 2.235
+SiTower.Mother World
+
+//SingleLayer.Copy SingleLayer_1
+//SingleLayer_1.Position 0.0 0.0 0.0
+//SingleLayer_1.Mother SiTower
+For I 3 2.16 -2.16
+    SingleLayer.Copy SingleLayer_%I
+    SingleLayer_%I.Position 0.0 0.0 $I
+    SingleLayer_%I.Mother SiTower
+Done
+
+// Aluminum Box
+Volume Al1
+Al1.Material Aluminium
+Al1.Color 7
+Al1.Visibility 1
+Al1.Shape TUBE 14.2875 15.24 5.365 0 360
+Al1.Position 0.0 0.0 0.0
+Al1.Mother World
+
+Volume Al2
+Al2.Material Aluminium
+Al2.Color 7
+Al2.Visibility 1
+Al2.Shape TUBE 0 15.24 0.3175 0 360
+Al2.Position 0.0 0.0 5.6825
+Al2.Mother World
+
+Volume Al3
+Al3.Material Aluminium
+Al3.Color 7
+Al3.Visibility 1
+Al3.Shape TUBE 0 15.24 0.3175 0 360
+Al3.Position 0.0 0.0 -5.6825
+Al3.Mother World
+
+
+// Trigger Criteria
+Trigger SingleCB
+SingleCB.Veto false
+SingleCB.TriggerByDetector true
+SingleCB.Detector SStrip 1
