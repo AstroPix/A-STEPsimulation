@@ -21,7 +21,7 @@ World.Mother 0
 Volume SingleLayer
 SingleLayer.Material Vacuum
 SingleLayer.Visibility 0
-SingleLayer.Shape BOX 3.5 3.5 0.185
+SingleLayer.Shape BOX 3 5 0.185
 SingleLayer.Mother World
 
 // One Quad Chip, 4 cm x 4 cm x 0.05 cm
@@ -38,8 +38,8 @@ Volume PCBoard
 PCBoard.Material PCB
 PCBoard.Color 3
 PCBoard.Visibility 1
-PCBoard.Shape Box 3.5 3.5 0.08
-PCBoard.Position 0.0 0.0 -0.105
+PCBoard.Shape Box 2.7 3.7 0.08
+PCBoard.Position 0.0 1.5 -0.105
 PCBoard.Mother SingleLayer
 
 // One AstroPix v3 chip, 35 x 35 pixels, 1.75 cm x 1.75 cm x 0.05 cm
@@ -104,36 +104,77 @@ SiTower.Mother World
 //SingleLayer.Copy SingleLayer_1
 //SingleLayer_1.Position 0.0 0.0 0.0
 //SingleLayer_1.Mother SiTower
-For I 3 2.16 -2.16
+For I 3 0.66 -0.66
     SingleLayer.Copy SingleLayer_%I
     SingleLayer_%I.Position 0.0 0.0 $I
     SingleLayer_%I.Mother SiTower
 Done
 
-// Aluminum Box
-Volume Al1
-Al1.Material Aluminium
-Al1.Color 7
-Al1.Visibility 1
-Al1.Shape TUBE 14.2875 15.24 5.365 0 360
-Al1.Position 0.0 0.0 0.0
-Al1.Mother World
+// Aluminum box, 0.635 cm thick
+Volume AlBox
+AlBox.Material Vacuum
+AlBox.Visibility 0
+AlBox.Shape Box 5 5 5 
+AlBox.Position 0 1.5 -3
+AlBox.Mother World
 
-Volume Al2
-Al2.Material Aluminium
-Al2.Color 7
-Al2.Visibility 1
-Al2.Shape TUBE 0 15.24 0.3175 0 360
-Al2.Position 0.0 0.0 5.6825
-Al2.Mother World
+Volume Altop
+Altop.Material Aluminium
+Altop.Visibility 1
+Altop.Shape Box 5 5 0.3175
+Altop.Position 0 0 4.6825
+Altop.Mother AlBox
+Altop.Copy Albot
+Albot.Position 0 0 -4.6825
+Albot.Mother AlBox
 
-Volume Al3
-Al3.Material Aluminium
-Al3.Color 7
-Al3.Visibility 1
-Al3.Shape TUBE 0 15.24 0.3175 0 360
-Al3.Position 0.0 0.0 -5.6825
-Al3.Mother World
+Volume Alside
+Alside.Material Aluminium
+Alside.Visibility 1
+Alside.Shape Box 5 0.3175 4.365
+Alside.Position 0 -4.6825 0
+Alside.Mother AlBox
+Alside.Copy Alside2
+Alside2.Position 0 4.6825 0
+Alside2.Mother AlBox
+
+Volume Alsside
+Alsside.Material Aluminium
+Alsside.Visibility 1
+Alsside.Shape Box 0.3175 4.365 4.365
+Alsside.Position -4.6825 0 0
+Alsside.Mother AlBox
+Alsside.Copy Alsside2
+Alsside2.Position 4.6825 0 0
+Alsside2.Mother AlBox
+
+
+// Rocket body
+Volume RBody
+RBody.Material Vacuum
+RBody.Visibility 0
+RBody.Shape Box 16 16 6
+RBody.Position 0.0 0.0 -3
+RBody.Mother World
+
+Volume AlR
+AlR.Material Aluminium
+AlR.Color 7
+AlR.Visibility 1
+AlR.Shape TUBE 14.2875 15.24 5.365 0 360
+AlR.Position 0 0 0
+AlR.Mother RBody
+
+Volume Alt
+Alt.Material Aluminium
+Alt.Color 7
+Alt.Visibility 1
+Alt.Shape TUBE 0 15.24 0.3175 0 360
+Alt.Position 0 0 5.6825
+Alt.Mother RBody
+Alt.Copy Alb
+Alb.Position 0.0 0.0 -5.6825
+Alb.Mother RBody
 
 
 // Trigger Criteria
