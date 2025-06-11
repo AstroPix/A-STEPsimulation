@@ -1,14 +1,13 @@
 ///////////////////////////////////////////////////
 // Geometry file for the A-STEP detector         //
-// Authors: Sayaka Suzuki (Hiroshima University) //
-//          Yusuke Suda   (Hiroshima University) //
+// Authors: Yusuke Suda (Hiroshima University)   //
+//          Adrien Laviron (NASA GSFC)           //
+// Version: 2025.04.30                           //
 ///////////////////////////////////////////////////
 
-
-SurroundingSphere 18.0  0.0  0.0  0.0  18.0
-//SurroundingSphere 8.0  0.0  0.0  0.0  8.0
+SurroundingSphere 20.0  0.0  0.0  0.0  20.0
 //ShowSurroundingSphere true
-Include /home/yusuke/software/ComPair/Geometry_AstroPix/materials/Materials.geo
+Include $MEGALIB/resource/examples/geomega/materials/Materials.geo
 
 Volume World
 World.Material Vacuum
@@ -17,168 +16,252 @@ World.Color 0
 World.Shape BRIK 500. 500. 500.
 World.Mother 0
 
-// Single layer (QuadChip 0.05 cm thick + PCB 0.16 cm thick), 7 cm x 7 cm x 0.21 cm
-Volume SingleLayer
-SingleLayer.Material Vacuum
-SingleLayer.Visibility 0
-SingleLayer.Shape BOX 3 5 0.185
-SingleLayer.Mother World
+Constant ShowPCB 0
+Constant ShowPayload 0
+Constant ShowRocket 0
+Constant PayloadWallMat Vacuum
+Constant RocketMat Vacuum
+#Constant PayloadWallMat Aluminium
+#Constant RocketMat Aluminium
+Constant LayerSpacing 0.965
 
-// One Quad Chip, 4 cm x 4 cm x 0.05 cm
-// Horizontal: 1.75*2 + 0.064*4 + 0.069 = 3.825 cm
-// Vertical:   1.75*2 + 0.064*2 + 0.15*2 + 0.018 = 3.946 cm
+// Single layer
+// Dimension: 5.4 cm x 7.399 cm x 0.237(=0.072+0.165) cm
+//   QuadChip: 0.0725 cm +- 0.0015 thick
+//   PCB: 0.165 cm thick
+// Here I use Width for X and Length for Y
+Constant PCBThickness 0.165
+Constant ChipThickness 0.0725
+Constant QCWidth 3.8090
+Constant QCLength 3.9330
+Constant Guardring 0.06
+Constant DigitalPeriphery 0.1475
+Constant QCPitchLength 0.018
+Constant QCPitchWidth 0.069
+Constant StructuralPitchW {QCPitchWidth+2*Guardring}
+Constant StructuralPitchL {DigitalPeriphery+QCPitchLength+Guardring}
+// Measured on carrier board v1.0.1
+Constant LayerLength 7.4
+Constant LayerWidth 5.4
+Constant FEELength 2.75
+Constant PCBLength 0.936
+Constant PCBSideL {LayerLength - FEELength - PCBLength}
+Constant PCBLeftW 0.88
+Constant PCBRightW 0.907
+Constant OverlapL {PCBLength+QCLength+FEELength-LayerLength}
+Constant OverlapW {PCBLeftW+PCBRightW+QCWidth-LayerWidth}
+// Bus bar
+//  width and offset are from A-STEP
+//  thickness estimated using the transmission of 31keV 133Ba line
+//  transmission estimated at ~ 350 counts / ~ 520 counts = 67%
+//  thickness should be revisited at some point
+Constant BBThickness 0.0045
+Constant BBWidth 1.2
+Constant BBOffset 0.38
+Constant QCThickness {ChipThickness+BBThickness}
+
+Volume SL
+SL.Material Vacuum
+SL.Color 2
+SL.Visibility 0
+SL.Shape BOX {.5*LayerWidth} {.5*LayerLength} {.5*(PCBThickness+QCThickness)}
+
 Volume QuadChip
 QuadChip.Material Vacuum
 QuadChip.Visibility 0
-QuadChip.Shape BOX 2.0 2.0 0.025
-QuadChip.Mother SingleLayer
+QuadChip.Color 6
+QuadChip.Shape BOX {.5*QCWidth} {.5*QCLength} {.5*QCThickness}
+QuadChip.Position {.5*QCWidth - .5*LayerWidth+PCBLeftW - .5*OverlapW} {.5*QCLength - .5*LayerLength+FEELength - .5*OverlapL} {.5*PCBThickness}
+QuadChip.Mother SL
 
-// PCB
-Volume PCBoard
-PCBoard.Material PCB
-PCBoard.Color 3
-PCBoard.Visibility 1
-PCBoard.Shape Box 2.7 3.7 0.08
-PCBoard.Position 0.0 1.5 -0.105
-PCBoard.Mother SingleLayer
+Volume BusBar
+BusBar.Material Copper
+BusBar.Visibility 1
+BusBar.Color 46
+BusBar.Shape BOX {.5*QCWidth} {.5*BBWidth} {.5*BBThickness}
+BusBar.Position {0.} {BBOffset+.5*BBWidth} {.5*ChipThickness}
+BusBar.Mother QuadChip
 
-// One AstroPix v3 chip, 35 x 35 pixels, 1.75 cm x 1.75 cm x 0.05 cm
-// Pixel size 0.05 cm x 0.05 cm x 0.05 cm
-// Here we're only counting the active area     
+// AstroPix v3 chip (active silicon)
+// Dimenstion: 1.75 cm x 1.75 cm x 0.007 cm (=Measured depletion thickness for V3, can be changed)
+// Pixel size 0.05 cm x 0.05 cm x 0.007 cm
+// 35 x 35 pixels
+Constant DepletionDepth 0.007 //{ChipThickness} // Assuming full depletion here
+Constant ActiveAreaWidth 1.75
+Constant ActiveAreaLength 1.75
+
+// Passive silicon
+Volume SiSubstrate
+SiSubstrate.Material Silicon
+SiSubstrate.Visibility 1
+SiSubstrate.Color 4
+SiSubstrate.Shape BOX {.5*QCWidth} {.5*QCLength} {.5*ChipThickness}
+SiSubstrate.Position {0.} {0.} {-.5*BBThickness}
+SiSubstrate.Mother QuadChip
+
+// Active volume (just the pixel array) in passive silicon
 Volume APS
 APS.Material Silicon
 APS.Visibility 1
-APS.Color 2
-APS.Shape BOX 0.875 0.875 0.025
+APS.Color 7
+APS.Shape BOX {.5*ActiveAreaWidth} {.5*ActiveAreaLength} {.5*DepletionDepth}
 
-// X+: 1.75/2 + 0.064 + 0.069/2 = +0.9735 cm
-// X-: 1.75/2 + 0.064 + 0.069/2 = -0.9735 cm
-// Y+:  1.75/2 + 0.15 + 0.018/2 = +1.034 cm
-// Y-: 1.75/2 + 0.064 + 0.018/2 = -0.948 cm
-For I 2 -0.9735 1.947
-    For J 2 1.034 -1.982
-        APS.Copy APS_%I_%J
-        APS_%I_%J.Position $I $J 0.0
-        APS_%I_%J.Mother QuadChip
-    Done
-Done  
-
-
-Strip2D         SStrip
-SStrip.SensitiveVolume  APS
-SStrip.DetectorVolume   QuadChip
-
-// StructuralPitch
-// X: 0.064*2+0.069 = 0.197 cm
-// Y: 0.064 + 0.15 + 0.018 = 0.232 cm
-SStrip.StructuralPitch 0.197 0.232 0.0
-
-// StructuralOffset
-// X: 2 - (1.75 + 0.064*2 + 0.069/2) = 0.0875 cm
-// Y: 2 - (1.75 + 0.064 + 0.15 + 0.018/2) = 0.027 cm
-SStrip.StructuralOffset 0.0875 0.027 0.0
-
-SStrip.Offset          0.0 0.0
-
-// Total number of strips in x and y assuming 0.05 cm pixel size
-SStrip.StripNumber 35 35
-
-SStrip.NoiseThreshold       0.0001
-SStrip.TriggerThreshold     0.0001
-
-// Measured values from V2LoResChip
-SStrip.EnergyResolution Gauss 14.4 14.4 1.47
-SStrip.EnergyResolution Gauss 17.8 17.8 0.94
-SStrip.EnergyResolution Gauss 22.2 22.2 1.62
-SStrip.EnergyResolution Gauss 31.0 31.0 1.65
-SStrip.EnergyResolution Gauss 59.5 59.5 1.30
-
-
-// 3-layer detector
-Volume SiTower
-SiTower.Material Vacuum
-SiTower.Visibility 0
-SiTower.Shape BRIK 3.5 3.5 2.235
-SiTower.Mother World
-
-//SingleLayer.Copy SingleLayer_1
-//SingleLayer_1.Position 0.0 0.0 0.0
-//SingleLayer_1.Mother SiTower
-For I 3 0.66 -0.66
-    SingleLayer.Copy SingleLayer_%I
-    SingleLayer_%I.Position 0.0 0.0 $I
-    SingleLayer_%I.Mother SiTower
+For I 2 {-.5*QCWidth+.5*ActiveAreaWidth+Guardring} {ActiveAreaWidth+StructuralPitchW}
+	For J 2 {-.5*QCLength+.5*ActiveAreaLength+DigitalPeriphery} {ActiveAreaLength+StructuralPitchL}
+		APS.Copy APS_%I_%J
+    APS_%I_%J.Position $I $J {.5*(ChipThickness-DepletionDepth)}
+		APS_%I_%J.Mother SiSubstrate
+	Done
 Done
 
-// Aluminum box, 0.635 cm thick
-Volume AlBox
-AlBox.Material Vacuum
-AlBox.Visibility 0
-AlBox.Shape Box 5 5 5 
-AlBox.Position 0 1.5 -3
-AlBox.Mother World
+// PCB
+Volume PCBoard1
+PCBoard1.Material PCB
+PCBoard1.Color 3
+PCBoard1.Visibility {ShowPCB}
+PCBoard1.Shape Box {.5*LayerWidth} {.5*PCBLength} {.5*PCBThickness}
+PCBoard1.Position 0.0 {.5*(LayerLength-PCBLength)} {-.5*QCThickness}
+PCBoard1.Mother SL
 
+Volume PCBoard2
+PCBoard2.Material PCB
+PCBoard2.Color 3
+PCBoard2.Visibility {ShowPCB}
+PCBoard2.Shape Box {.5*LayerWidth} {.5*FEELength} {.5*PCBThickness}
+PCBoard2.Position 0.0 {.5*(FEELength-LayerLength)} {-.5*QCThickness}
+PCBoard2.Mother SL
+
+Volume PCBoard3
+PCBoard3.Material PCB
+PCBoard3.Color 3
+PCBoard3.Visibility {ShowPCB}
+PCBoard3.Shape Box {.5*PCBRightW} {.5*PCBSideL} {.5*PCBThickness}
+PCBoard3.Position {.5*(LayerWidth-PCBRightW)} { -.5*LayerLength+FEELength+.5*PCBSideL} {-.5*QCThickness}
+PCBoard3.Mother SL
+
+Volume PCBoard4
+PCBoard4.Material PCB
+PCBoard4.Color 3
+PCBoard4.Visibility {ShowPCB}
+PCBoard4.Shape Box {.5*PCBLeftW} {.5*PCBSideL} {.5*PCBThickness}
+PCBoard4.Position {-.5*(LayerWidth-PCBLeftW)} { -.5*LayerLength+FEELength+.5*PCBSideL} {-.5*QCThickness}
+PCBoard4.Mother SL
+
+For I 3 {LayerSpacing} {-LayerSpacing}
+    SL.Copy SL_%I
+    SL_%I.Position 0.0 0.0 $I
+    SL_%I.Mother World
+Done
+
+
+// Aluminum box, 0.635 cm thick*/
 Volume Altop
-Altop.Material Aluminium
-Altop.Visibility 1
+Altop.Material PayloadWallMat
+Altop.Visibility {ShowPayload}
+#Altop.Color 2
 Altop.Shape Box 5 5 0.3175
-Altop.Position 0 0 4.6825
-Altop.Mother AlBox
+Altop.Position 0 -0.6 1.6825
+Altop.Mother World
 Altop.Copy Albot
-Albot.Position 0 0 -4.6825
-Albot.Mother AlBox
+Albot.Position 0 -0.6 -7.6825
+Albot.Mother World
 
 Volume Alside
-Alside.Material Aluminium
-Alside.Visibility 1
+Alside.Material PayloadWallMat
+Alside.Visibility {ShowPayload}
+#Alside.Color 3
 Alside.Shape Box 5 0.3175 4.365
-Alside.Position 0 -4.6825 0
-Alside.Mother AlBox
+Alside.Position 0 -5.2825 -3
+Alside.Mother World
 Alside.Copy Alside2
-Alside2.Position 0 4.6825 0
-Alside2.Mother AlBox
+Alside2.Position 0 4.0825 -3
+Alside2.Mother World
 
 Volume Alsside
-Alsside.Material Aluminium
-Alsside.Visibility 1
+Alsside.Material PayloadWallMat
+Alsside.Visibility {ShowPayload}
+#Alsside.Color 4
 Alsside.Shape Box 0.3175 4.365 4.365
-Alsside.Position -4.6825 0 0
-Alsside.Mother AlBox
+Alsside.Position -4.6825 -0.6 -3
+Alsside.Mother World
 Alsside.Copy Alsside2
-Alsside2.Position 4.6825 0 0
-Alsside2.Mother AlBox
+Alsside2.Position 4.6825 -0.6 -3
+Alsside2.Mother World
 
 
-// Rocket body
-Volume RBody
-RBody.Material Vacuum
-RBody.Visibility 0
-RBody.Shape Box 16 16 6
-RBody.Position 0.0 0.0 -3
-RBody.Mother World
-
+//// Rocket body
 Volume AlR
-AlR.Material Aluminium
+AlR.Material RocketMat
 AlR.Color 7
-AlR.Visibility 1
+AlR.Visibility {ShowRocket}
 AlR.Shape TUBE 14.2875 15.24 5.365 0 360
-AlR.Position 0 0 0
-AlR.Mother RBody
+AlR.Position 0 0 -3
+AlR.Mother World
 
 Volume Alt
-Alt.Material Aluminium
+Alt.Material RocketMat
 Alt.Color 7
-Alt.Visibility 1
+Alt.Visibility {ShowRocket}
 Alt.Shape TUBE 0 15.24 0.3175 0 360
-Alt.Position 0 0 5.6825
-Alt.Mother RBody
+Alt.Position 0 0 2.6825
+Alt.Mother World
 Alt.Copy Alb
-Alb.Position 0.0 0.0 -5.6825
-Alb.Mother RBody
+Alb.Position 0.0 0.0 -8.6825
+Alb.Mother World
+
+// Detector definition and performances
+//Strip2D         SStrip
+//SStrip.SensitiveVolume  APS
+//SStrip.DetectorVolume   SL
+//
+//// StructuralPitch
+//// X: 0.064*2+0.069 = 0.197 cm
+//// Y: 0.064 + 0.15 + 0.018 = 0.232 cm
+//SStrip.StructuralPitch 0.197 0.232 0.0
+//
+//// StructuralOffset
+//// X: 2 - (1.75 + 0.064*2 + 0.069/2) = 0.0875 cm
+//// Y: 2 - (1.75 + 0.064 + 0.15 + 0.018/2) = 0.027 cm
+//SStrip.StructuralOffset 0.0875 0.027 0.0
+//
+//SStrip.Offset          0.0 0.0
+//
+//// Total number of strips in x and y assuming 0.05 cm pixel size
+//SStrip.StripNumber 35 35
+//
+//SStrip.NoiseThreshold       0.0001
+//SStrip.TriggerThreshold     0.0001
+//
+//// Measured values from V2LoResChip
+//SStrip.EnergyResolution Gauss 14.4 14.4 1.47
+//SStrip.EnergyResolution Gauss 17.8 17.8 0.94
+//SStrip.EnergyResolution Gauss 22.2 22.2 1.62
+//SStrip.EnergyResolution Gauss 31.0 31.0 1.65
+//SStrip.EnergyResolution Gauss 59.5 59.5 1.30
+
+
+// Detector definition and performances
+Strip2D         AstroPix
+AstroPix.SensitiveVolume  APS
+AstroPix.DetectorVolume   QuadChip
+AstroPix.StripNumber      35 35
+AstroPix.Offset           0.0 0.0
+AstroPix.StructuralPitch  {StructuralPitchW} {StructuralPitchL} {LayerSpacing}
+AstroPix.StructuralOffset {Guardring} {DigitalPeriphery} {ChipThickness-DepletionDepth}
+
+AstroPix.NoiseThreshold       0.0001
+AstroPix.TriggerThreshold     0.0001
+
+// Measured values from V2LoResChip
+AstroPix.EnergyResolution Gauss 14.4 14.4 1.47
+AstroPix.EnergyResolution Gauss 17.8 17.8 0.94
+AstroPix.EnergyResolution Gauss 22.2 22.2 1.62
+AstroPix.EnergyResolution Gauss 31.0 31.0 1.65
+AstroPix.EnergyResolution Gauss 59.5 59.5 1.30
 
 
 // Trigger Criteria
 Trigger SingleCB
 SingleCB.Veto false
 SingleCB.TriggerByDetector true
-SingleCB.Detector SStrip 1
+SingleCB.Detector AstroPix 1
