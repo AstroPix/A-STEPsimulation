@@ -28,9 +28,10 @@ World.Shape BRIK 500. 500. 500.
 World.Mother 0
 
 Constant ShowPCB 1
-Constant ShowPayload 0
+Constant ShowPayload 1
 Constant ShowRocket 0
 
 #Include Rocket.geo
 Include ASTEP.geo
 Include ASTEP.det
+Include Payload.geo

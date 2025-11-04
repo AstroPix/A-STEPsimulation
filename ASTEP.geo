@@ -1,5 +1,5 @@
-Constant PayloadWallMat Vacuum
-#Constant PayloadWallMat Aluminium
+#Constant PayloadWallMat Vacuum
+Constant PayloadWallMat Alu6061
 
 Constant LayerSpacing 0.965
 
@@ -18,6 +18,7 @@ Constant QCPitchLength 0.018
 Constant QCPitchWidth 0.069
 Constant StructuralPitchW {QCPitchWidth+2*Guardring}
 Constant StructuralPitchL {DigitalPeriphery+QCPitchLength+Guardring}
+
 // Measured on carrier board v1.0.1
 Constant LayerLength 7.4
 Constant LayerWidth 5.4
@@ -44,6 +45,9 @@ Constant PCB_Screw_Radius 0.127
 Constant PCB_Screw_Offset_Length {0.1905 + PCB_Screw_Radius}
 Constant PCB_Screw_Offset_Width {0.254 + PCB_Screw_Radius}
 
+
+//////////////////////////////////////////////////////////////////
+
 Volume SL
 SL.Material Vacuum
 SL.Color 2
@@ -57,7 +61,6 @@ QuadChip.Color 6
 QuadChip.Shape BOX {.5*QCLength} {.5*QCThickness} {.5*QCWidth}
 QuadChip.Position {.5*QCLength - .5*LayerLength+FEELength - .5*OverlapL} {.5*PCBThickness} {.5*QCWidth - .5*LayerWidth+PCBLeftW - .5*OverlapW}
 QuadChip.Mother SL
-
 
 Volume BusBar
 BusBar.Material Copper
@@ -137,6 +140,24 @@ PCBoard2.Shape Box {.5*FEELength} {.5*PCBThickness} {.5*LayerWidth}
 PCBoard2.Position {.5*(FEELength-LayerLength)} {-.5*QCThickness} 0.0
 PCBoard2.Mother SL
 
+Volume PCBoard2_Screw1
+PCBoard2_Screw1.Material Steel_18_8
+PCBoard2_Screw1.Color 1
+PCBoard2_Screw1.Visibility {ShowPCB}
+PCBoard2_Screw1.Shape Tube 0 PCB_Screw_Radius {.5*PCBThickness} 0 360 // This is in the z direction
+PCBoard2_Screw1.Rotation 90 0 0
+PCBoard2_Screw1.Position {-.5*FEELength + PCB_Screw_Offset_Length} 0 {.5*LayerWidth - PCB_Screw_Offset_Width}
+PCBoard2_Screw1.Mother PCBoard2
+
+Volume PCBoard2_Screw2
+PCBoard2_Screw2.Material Steel_18_8
+PCBoard2_Screw2.Color 1
+PCBoard2_Screw2.Visibility {ShowPCB}
+PCBoard2_Screw2.Shape Tube 0 PCB_Screw_Radius {.5*PCBThickness} 0 360 // This is in the z direction
+PCBoard2_Screw2.Rotation 90 0 0
+PCBoard2_Screw2.Position {-.5*FEELength + PCB_Screw_Offset_Length} 0  {-.5*LayerWidth + PCB_Screw_Offset_Width}
+PCBoard2_Screw2.Mother PCBoard2
+
 // -z PCB
 Volume PCBoard3
 PCBoard3.Material PCB
@@ -155,40 +176,32 @@ PCBoard4.Shape Box {.5*PCBSideL} {.5*PCBThickness} {.5*PCBLeftW}
 PCBoard4.Position { -.5*LayerLength+FEELength+.5*PCBSideL} {-.5*QCThickness} {.5*(LayerWidth-PCBLeftW)}
 PCBoard4.Mother SL
 
-For I 3 {LayerSpacing} {-LayerSpacing}
+// PCB Screws Between Layers
+Volume PCB_Mount_Screw
+PCB_Mount_Screw.Material Steel_18_8
+PCB_Mount_Screw.Color 1
+PCB_Mount_Screw.Visibility {ShowPCB}
+PCB_Mount_Screw.Shape Tube 0 PCB_Screw_Radius {.5*LayerSpacing - .5*PCBThickness} 0 360 // This is in the z direction
+PCB_Mount_Screw.Rotation 90 0 0
+
+For I 3 {2*LayerSpacing} {-LayerSpacing}
     SL.Copy SL_%I
-    SL_%I.Position 0.0 $I 0.0
+    SL_%I.Position {-.5*QCLength + .5*LayerLength - FEELength + .5*OverlapL} {$I - .5*PCBThickness} {-.5*QCWidth + .5*LayerWidth - PCBLeftW + .5*OverlapW}
     SL_%I.Mother World
+    
+    PCB_Mount_Screw.Copy PCB_Mount_Screw1_%I
+    PCB_Mount_Screw1_%I.Position {-.5*QCLength + LayerLength - FEELength + .5*OverlapL - PCB_Screw_Offset_Length} {$I - .5*PCBThickness - .5*QCThickness + .5*LayerSpacing} {-.5*QCWidth + LayerWidth - PCBLeftW + .5*OverlapW - PCB_Screw_Offset_Width}
+	PCB_Mount_Screw1_%I.Mother World
+	
+	PCB_Mount_Screw.Copy PCB_Mount_Screw2_%I
+    PCB_Mount_Screw2_%I.Position {-.5*QCLength + LayerLength - FEELength + .5*OverlapL - PCB_Screw_Offset_Length} {$I - .5*PCBThickness - .5*QCThickness + .5*LayerSpacing} {-.5*QCWidth - PCBLeftW + .5*OverlapW + PCB_Screw_Offset_Width}
+	PCB_Mount_Screw2_%I.Mother World
+	
+	PCB_Mount_Screw.Copy PCB_Mount_Screw3_%I
+    PCB_Mount_Screw3_%I.Position {-.5*QCLength - FEELength + .5*OverlapL + PCB_Screw_Offset_Length} {$I - .5*PCBThickness - .5*QCThickness + .5*LayerSpacing} {-.5*QCWidth + LayerWidth - PCBLeftW + .5*OverlapW - PCB_Screw_Offset_Width}
+	PCB_Mount_Screw3_%I.Mother World
+	
+	PCB_Mount_Screw.Copy PCB_Mount_Screw4_%I
+    PCB_Mount_Screw4_%I.Position {-.5*QCLength - FEELength + .5*OverlapL + PCB_Screw_Offset_Length} {$I - .5*PCBThickness - .5*QCThickness + .5*LayerSpacing} {-.5*QCWidth - PCBLeftW + .5*OverlapW + PCB_Screw_Offset_Width}
+	PCB_Mount_Screw4_%I.Mother World
 Done
-
-
-// Aluminum box, 0.635 cm thick*/
-//Volume Altop
-//Altop.Material PayloadWallMat
-//Altop.Visibility {ShowPayload}
-//Altop.Shape Box 5 5 0.3175
-//Altop.Position 0 -0.6 1.6825
-//Altop.Mother World
-//Altop.Copy Albot
-//Albot.Position 0 -0.6 -7.6825
-//Albot.Mother World
-
-//Volume Alside
-//Alside.Material PayloadWallMat
-//Alside.Visibility {ShowPayload}
-//Alside.Shape Box 5 0.3175 4.365
-//Alside.Position 0 -5.2825 -3
-//Alside.Mother World
-//Alside.Copy Alside2
-//Alside2.Position 0 4.0825 -3
-//Alside2.Mother World
-
-//Volume Alsside
-//Alsside.Material PayloadWallMat
-//Alsside.Visibility {ShowPayload}
-//Alsside.Shape Box 0.3175 4.365 4.365
-//Alsside.Position -4.6825 -0.6 -3
-//Alsside.Mother World
-//Alsside.Copy Alsside2
-//Alsside2.Position 4.6825 -0.6 -3
-//Alsside2.Mother World
