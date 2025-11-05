@@ -3,6 +3,16 @@ Constant PayloadWallMat Alu6061
 
 Constant LayerSpacing 0.965
 
+// AstroPix v3 chip (active silicon)
+// Dimenstion: 1.75 cm x 1.75 cm x 0.007 cm (=Measured depletion thickness for V3, can be changed)
+// Pixel size 0.05 cm x 0.05 cm x 0.007 cm
+// 35 x 35 pixels
+
+// Constant DepletionDepth {ChipThickness} // Assuming full depletion here
+Constant DepletionDepth 0.007 // Assuming 70 micron depletion
+Constant ActiveAreaWidth 1.75
+Constant ActiveAreaLength 1.75
+
 // Single layer
 // Dimension: 5.4 cm x 7.399 cm x 0.237(=0.072+0.165) cm
 //   QuadChip: 0.0725 cm +- 0.0015 thick
@@ -69,14 +79,6 @@ BusBar.Color 46
 BusBar.Shape BOX {.5*BBWidth} {.5*BBThickness} {.5*QCWidth}
 BusBar.Position {BBOffset+.5*BBWidth} {.5*ChipThickness} {0.}
 BusBar.Mother QuadChip
-
-// AstroPix v3 chip (active silicon)
-// Dimenstion: 1.75 cm x 1.75 cm x 0.007 cm (=Measured depletion thickness for V3, can be changed)
-// Pixel size 0.05 cm x 0.05 cm x 0.007 cm
-// 35 x 35 pixels
-Constant DepletionDepth 0.007 //{ChipThickness} // Assuming full depletion here
-Constant ActiveAreaWidth 1.75
-Constant ActiveAreaLength 1.75
 
 // Passive silicon
 Volume SiSubstrate
