@@ -33,15 +33,32 @@ Constant Bottom_Screw_ID 0.1143
 Constant Bottom_Screw_OD 0.2794
 Constant Bottom_Short_Screw_Height 0.635
 Constant Bottom_Short_Screw_Width_Offset 2.2606
-Constant Bottom_Short_Screw_Length_Offset 4.2164
-Constant Bottom_Short_Screw_Width_Spacing 3.4
-Constant Bottom_Short_Screw_Length_Spacing 4.7
+Constant Bottom_Short_Screw_Length_Offset 4.18084
+Constant Bottom_Short_Screw_Width_Spacing 4.7
+Constant Bottom_Short_Screw_Length_Spacing 3.4
 
 Constant Bottom_Tall_Screw_Height 1.27
 Constant Bottom_Tall_Screw_Width_Offset 1.3462
 Constant Bottom_Tall_Screw_Length_Offset 1.0414
 Constant Bottom_Tall_Screw_Width_Spacing 4.826
 Constant Bottom_Tall_Screw_Length_Spacing 6.604
+
+Constant BB_Width 5.461
+Constant BB_Length 8.636
+Constant BB_Depth {PCBThickness}
+
+Constant FPGA_Width 6.3246
+Constant FPGA_Length 7.5184
+Constant FPGA_Depth {PCBThickness}
+
+Constant HV_Width 6.4
+Constant HV_Length 4.9
+Constant HV_Depth {PCBThickness}
+Constant FPGA_HV_Offset 1.27
+
+Constant Screw_Head_Diameter 0.436372
+Constant Screw_Head_Height 0.27051
+Constant Screw_Helix_Length 0.79375
 
 // Aluminum box, 0.4 cm thick*/
 
@@ -341,37 +358,60 @@ FootC4.Mother World
 
 #############################################################################################
 
-Volume Short_Screw
-Short_Screw.Material PayloadWallMat
-Short_Screw.Visibility {ShowPayload}
-Short_Screw.Shape TUBE {.5*Bottom_Screw_ID} {.5*Bottom_Screw_OD} {.5*Bottom_Short_Screw_Height} 0 360
+Volume Short_Screw_Hole
+Short_Screw_Hole.Material PayloadWallMat
+Short_Screw_Hole.Visibility {ShowPayload}
+Short_Screw_Hole.Shape TUBE {.5*Bottom_Screw_ID} {.5*Bottom_Screw_OD} {.5*Bottom_Short_Screw_Height} 0 360
+
+Volume Screw_in_Hole
+Screw_in_Hole.Material Steel_18_8
+Screw_in_Hole.Visibility {ShowPayload}
+Screw_in_Hole.Shape TUBE 0 {.5*Bottom_Screw_ID} {.5*Screw_Helix_Length - .5*PCBThickness} 0 360
+
+Volume Screw_Middle
+Screw_Middle.Material Steel_18_8
+Screw_Middle.Visibility {ShowPayload}
+Screw_Middle.Shape TUBE 0 {.5*Screw_Head_Diameter} {.5*FPGA_HV_Offset - .5*PCBThickness} 0 360
 
 For I 2 {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD} {Bottom_Short_Screw_Width_Spacing}
-	For J 3 {Wall1_y - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD} {-Bottom_Short_Screw_Length_Spacing}
-		Short_Screw.Copy Short_Screw_%I_%J
-		Short_Screw_%I_%J.Position $I $J {Wall1_z - .5*Wall1_Width + Wall_Thickness + .5*Bottom_Short_Screw_Height}
-		Short_Screw_%I_%J.Mother World
+	For J 3 {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD} {-Bottom_Short_Screw_Length_Spacing}
+		Short_Screw_Hole.Copy Short_Screw_Hole_%I_%J
+		Short_Screw_Hole_%I_%J.Position $I $J {Wall1_z - .5*Wall1_Width + Wall_Thickness + .5*Bottom_Short_Screw_Height}
+		Short_Screw_Hole_%I_%J.Mother World
+		
+		Screw_in_Hole.Copy Short_Screw_in_Hole_%I_%J
+		Short_Screw_in_Hole_%I_%J.Position $I $J {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height - .5*Screw_Helix_Length + .5*PCBThickness}
+		Short_Screw_in_Hole_%I_%J.Mother World
 	Done
 Done
 
-Volume Tall_Screw
-Tall_Screw.Material PayloadWallMat
-Tall_Screw.Visibility {ShowPayload}
-Tall_Screw.Shape TUBE {.5*Bottom_Screw_ID} {.5*Bottom_Screw_OD} {.5*Bottom_Tall_Screw_Height} 0 360
+For I 2 {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD} {Bottom_Short_Screw_Width_Spacing}
+	For J 2 {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing} {-Bottom_Short_Screw_Length_Spacing}
+		
+		Screw_Middle.Copy Screw_Middle_%I_%J
+		Screw_Middle_%I_%J.Position $I $J {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + .5*PCBThickness + .5*FPGA_HV_Offset}
+		Screw_Middle_%I_%J.Mother World
+	Done
+Done
+
+Volume Tall_Screw_Hole
+Tall_Screw_Hole.Material PayloadWallMat
+Tall_Screw_Hole.Visibility {ShowPayload}
+Tall_Screw_Hole.Shape TUBE {.5*Bottom_Screw_ID} {.5*Bottom_Screw_OD} {.5*Bottom_Tall_Screw_Height} 0 360
 
 For I 2 {Wall1_x + .5*Wall1_Length - Wall_Thickness - Bottom_Tall_Screw_Width_Offset - .5*Bottom_Screw_OD} {-Bottom_Tall_Screw_Width_Spacing}
 	For J 2 {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + Bottom_Tall_Screw_Length_Offset + .5*Bottom_Screw_OD} {Bottom_Tall_Screw_Length_Spacing}
-		Tall_Screw.Copy Tall_Screw_%I_%J
-		Tall_Screw_%I_%J.Position $I $J {Wall1_z - .5*Wall1_Width + Wall_Thickness + .5*Bottom_Tall_Screw_Height}
-		Tall_Screw_%I_%J.Mother World
+		Tall_Screw_Hole.Copy Tall_Screw_Hole_%I_%J
+		Tall_Screw_Hole_%I_%J.Position $I $J {Wall1_z - .5*Wall1_Width + Wall_Thickness + .5*Bottom_Tall_Screw_Height}
+		Tall_Screw_Hole_%I_%J.Mother World
+		
+		Screw_in_Hole.Copy Tall_Screw_in_Hole_%I_%J
+		Tall_Screw_in_Hole_%I_%J.Position $I $J {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Tall_Screw_Height - .5*Screw_Helix_Length + .5*PCBThickness}
+		Tall_Screw_in_Hole_%I_%J.Mother World
 	Done
 Done
 
 ####################################################################################
-
-Constant BB_Width 5.461
-Constant BB_Length 8.636
-Constant BB_Depth 0.1524
 
 Volume BeagleBone
 BeagleBone.Visibility 1
@@ -381,8 +421,21 @@ BeagleBone.Shape BOX {.5*BB_Width} {.5*BB_Length} {.5*BB_Depth}
 BeagleBone.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - Bottom_Tall_Screw_Width_Offset - .5*Bottom_Screw_OD - .5*Bottom_Tall_Screw_Width_Spacing} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + Bottom_Tall_Screw_Length_Offset + .5*Bottom_Screw_OD + .5*Bottom_Tall_Screw_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Tall_Screw_Height + .5*BB_Depth}
 BeagleBone.Mother World
 
+Volume FPGA
+FPGA.Visibility 1
+FPGA.Material PCB
+FPGA.Color 3
+FPGA.Shape BOX {.5*FPGA_Width} {.5*FPGA_Length} {.5*FPGA_Depth}
+FPGA.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD + .5*Bottom_Short_Screw_Width_Spacing} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + .5*FPGA_Depth}
+FPGA.Mother World
 
-
+Volume HV
+HV.Visibility 1
+HV.Material PCB
+HV.Color 3
+HV.Shape BOX {.5*HV_Width} {.5*HV_Length} {.5*HV_Depth}
+HV.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD + .5*Bottom_Short_Screw_Width_Spacing} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + .5*HV_Depth}
+HV.Mother World
 
 
 
