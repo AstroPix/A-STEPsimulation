@@ -1,6 +1,3 @@
-#Constant PayloadWallMat Vacuum
-Constant PayloadWallMat Alu6061
-
 Constant LayerSpacing 0.965
 
 // AstroPix v3 chip (active silicon)

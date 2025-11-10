@@ -1,3 +1,7 @@
+Constant PayloadWallMat Alu6061
+Constant PayloadScrewMat Steel_18_8
+Constant PayloadPCBMat PCB
+
 // Payload Housing
 Constant Wall_Thickness 0.4
 Constant Wall1_Length 16.51
@@ -59,6 +63,35 @@ Constant FPGA_HV_Offset 1.27
 Constant Screw_Head_Diameter 0.436372
 Constant Screw_Head_Height 0.27051
 Constant Screw_Helix_Length 0.79375
+
+Constant PDU_Wall_Width 2.54
+
+Constant PDU_Wall2_Hole_Center_Width 1.905
+Constant PDU_Wall2_Hole_Center_Height 1.0668
+Constant PDU_Wall2_Hole_Wing_Width 0.4318
+Constant PDU_Wall2_Hole_Wing_Radius 0.2794
+Constant PDU_Wall2_Hole_Ledge_Width 0.2286
+Constant PDU_Wall2_Hole_Ledge_Depth 0.1524
+Constant PDU_Wall2_Hole_Width_Offset 0.381
+Constant PDU_Wall2_Hole_Length_Offset 1.27
+
+Constant PDU_Screw_ID 0.2286
+Constant PDU_Screw_OD 0.635
+Constant PDU_Screw_Height 0.508
+Constant PDU_Screw_Width_Offset 1.9812
+Constant PDU_Screw_Length_Offset 0.5334
+Constant PDU_Screw_Spacing 5.461
+
+Constant PDU_Rectangle_Length 1.27
+Constant PDU_Rectangle_Width 2.54
+Constant PDU_Rectangle_Height .254
+Constant PDU_Rectangle_Length_Offset 7.4168
+Constant PDU_Rectangle_Width_Offset 3.8862
+Constant PDU_Rectangle_Spacing 3.0734
+
+Constant PDU_Width 12.1031
+Constant PDU_Length 12.1031
+Constant PDU_Height 0.16002
 
 // Aluminum box, 0.4 cm thick*/
 
@@ -158,14 +191,14 @@ FootA_Subset1.Position 0 0 0
 FootA_Subset1.Mother FootA
 
 Volume FootA_Subset1_Ledge_Subtraction
-FootA_Subset1_Ledge_Subtraction.Material Steel_18_8
+FootA_Subset1_Ledge_Subtraction.Material PayloadScrewMat
 FootA_Subset1_Ledge_Subtraction.Visibility {ShowPayload}
 FootA_Subset1_Ledge_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Ledge_Diameter} {.5*Foot_Screw_Hole_Ledge_Depth} 0 180
 FootA_Subset1_Ledge_Subtraction.Position 0 0 {.5*Foot_Height - .5*Foot_Screw_Hole_Ledge_Depth}
 FootA_Subset1_Ledge_Subtraction.Mother FootA_Subset1
 
 Volume FootA_Subset1_Hole_Subtraction
-FootA_Subset1_Hole_Subtraction.Material Steel_18_8
+FootA_Subset1_Hole_Subtraction.Material PayloadScrewMat
 FootA_Subset1_Hole_Subtraction.Visibility {ShowPayload}
 FootA_Subset1_Hole_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Diameter} {.5*Foot_Height - .5*Foot_Screw_Hole_Ledge_Depth} 0 180
 FootA_Subset1_Hole_Subtraction.Position 0 0 {-.5*Foot_Screw_Hole_Ledge_Depth}
@@ -179,14 +212,14 @@ FootA_Subset2.Position {.5*Foot_Outer_Radius} {-.5*Foot_Outer_Radius} 0
 FootA_Subset2.Mother FootA
 
 Volume FootA_Subset2_Ledge_Subtraction
-FootA_Subset2_Ledge_Subtraction.Material Steel_18_8
+FootA_Subset2_Ledge_Subtraction.Material PayloadScrewMat
 FootA_Subset2_Ledge_Subtraction.Visibility {ShowPayload}
 FootA_Subset2_Ledge_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Ledge_Diameter} {.5*Foot_Screw_Hole_Ledge_Depth} 180 360
 FootA_Subset2_Ledge_Subtraction.Position {-.5*Foot_Outer_Radius} {.5*Foot_Outer_Radius} {.5*Foot_Height - .5*Foot_Screw_Hole_Ledge_Depth}
 FootA_Subset2_Ledge_Subtraction.Mother FootA_Subset2
 
 Volume FootA_Subset2_Hole_Subtraction
-FootA_Subset2_Hole_Subtraction.Material Steel_18_8
+FootA_Subset2_Hole_Subtraction.Material PayloadScrewMat
 FootA_Subset2_Hole_Subtraction.Visibility {ShowPayload}
 FootA_Subset2_Hole_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Diameter} {.5*Foot_Height - .5*Foot_Screw_Hole_Ledge_Depth} 180 360
 FootA_Subset2_Hole_Subtraction.Position {-.5*Foot_Outer_Radius} {.5*Foot_Outer_Radius} {-.5*Foot_Screw_Hole_Ledge_Depth}
@@ -223,14 +256,14 @@ FootB_Subset1.Position 0 0 0
 FootB_Subset1.Mother FootB
 
 Volume FootB_Subset1_Ledge_Subtraction
-FootB_Subset1_Ledge_Subtraction.Material Steel_18_8
+FootB_Subset1_Ledge_Subtraction.Material PayloadScrewMat
 FootB_Subset1_Ledge_Subtraction.Visibility {ShowPayload}
 FootB_Subset1_Ledge_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Ledge_Diameter} {.5*Foot_Screw_Hole_Ledge_Depth} 0 180
 FootB_Subset1_Ledge_Subtraction.Position 0 0 {.5*Foot_Height - .5*Foot_Screw_Hole_Ledge_Depth}
 FootB_Subset1_Ledge_Subtraction.Mother FootB_Subset1
 
 Volume FootB_Subset1_Hole_Subtraction
-FootB_Subset1_Hole_Subtraction.Material Steel_18_8
+FootB_Subset1_Hole_Subtraction.Material PayloadScrewMat
 FootB_Subset1_Hole_Subtraction.Visibility {ShowPayload}
 FootB_Subset1_Hole_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Diameter} {.5*Foot_Height - .5*Foot_Screw_Hole_Ledge_Depth} 0 180
 FootB_Subset1_Hole_Subtraction.Position 0 0 {-.5*Foot_Screw_Hole_Ledge_Depth}
@@ -244,14 +277,14 @@ FootB_Subset2.Position {-.5*Foot_Outer_Radius} {-.5*Foot_Outer_Radius} 0
 FootB_Subset2.Mother FootB
 
 Volume FootB_Subset2_Ledge_Subtraction
-FootB_Subset2_Ledge_Subtraction.Material Steel_18_8
+FootB_Subset2_Ledge_Subtraction.Material PayloadScrewMat
 FootB_Subset2_Ledge_Subtraction.Visibility {ShowPayload}
 FootB_Subset2_Ledge_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Ledge_Diameter} {.5*Foot_Screw_Hole_Ledge_Depth} 180 360
 FootB_Subset2_Ledge_Subtraction.Position {.5*Foot_Outer_Radius} {.5*Foot_Outer_Radius} {.5*Foot_Height - .5*Foot_Screw_Hole_Ledge_Depth}
 FootB_Subset2_Ledge_Subtraction.Mother FootB_Subset2
 
 Volume FootB_Subset2_Hole_Subtraction
-FootB_Subset2_Hole_Subtraction.Material Steel_18_8
+FootB_Subset2_Hole_Subtraction.Material PayloadScrewMat
 FootB_Subset2_Hole_Subtraction.Visibility {ShowPayload}
 FootB_Subset2_Hole_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Diameter} {.5*Foot_Height - .5*Foot_Screw_Hole_Ledge_Depth} 180 360
 FootB_Subset2_Hole_Subtraction.Position {.5*Foot_Outer_Radius} {.5*Foot_Outer_Radius} {-.5*Foot_Screw_Hole_Ledge_Depth}
@@ -288,14 +321,14 @@ FootC_Subset1.Position 0 0 0
 FootC_Subset1.Mother FootC
 
 Volume FootC_Subset1_Ledge_Subtraction
-FootC_Subset1_Ledge_Subtraction.Material Steel_18_8
+FootC_Subset1_Ledge_Subtraction.Material PayloadScrewMat
 FootC_Subset1_Ledge_Subtraction.Visibility {ShowPayload}
 FootC_Subset1_Ledge_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Ledge_Diameter} {.5*Foot_Screw_Hole_Ledge_Depth} 0 180
 FootC_Subset1_Ledge_Subtraction.Position 0 0 {.5*Foot_Height - .5*Foot_Screw_Hole_Ledge_Depth}
 FootC_Subset1_Ledge_Subtraction.Mother FootC_Subset1
 
 Volume FootC_Subset1_Hole_Subtraction
-FootC_Subset1_Hole_Subtraction.Material Steel_18_8
+FootC_Subset1_Hole_Subtraction.Material PayloadScrewMat
 FootC_Subset1_Hole_Subtraction.Visibility {ShowPayload}
 FootC_Subset1_Hole_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Diameter} {.5*Foot_Height - .5*Foot_Screw_Hole_Ledge_Depth} 0 180
 FootC_Subset1_Hole_Subtraction.Position 0 0 {-.5*Foot_Screw_Hole_Ledge_Depth}
@@ -309,14 +342,14 @@ FootC_Subset2.Position 0 {-.5*Foot_Outer_Radius} 0
 FootC_Subset2.Mother FootC
 
 Volume FootC_Subset2_Ledge_Subtraction
-FootC_Subset2_Ledge_Subtraction.Material Steel_18_8
+FootC_Subset2_Ledge_Subtraction.Material PayloadScrewMat
 FootC_Subset2_Ledge_Subtraction.Visibility {ShowPayload}
 FootC_Subset2_Ledge_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Ledge_Diameter} {.5*Foot_Screw_Hole_Ledge_Depth} 180 360
 FootC_Subset2_Ledge_Subtraction.Position 0 {.5*Foot_Outer_Radius} {.5*Foot_Height - .5*Foot_Screw_Hole_Ledge_Depth}
 FootC_Subset2_Ledge_Subtraction.Mother FootC_Subset2
 
 Volume FootC_Subset2_Hole_Subtraction
-FootC_Subset2_Hole_Subtraction.Material Steel_18_8
+FootC_Subset2_Hole_Subtraction.Material PayloadScrewMat
 FootC_Subset2_Hole_Subtraction.Visibility {ShowPayload}
 FootC_Subset2_Hole_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Diameter} {.5*Foot_Height - .5*Foot_Screw_Hole_Ledge_Depth} 180 360
 FootC_Subset2_Hole_Subtraction.Position 0 {.5*Foot_Outer_Radius} {-.5*Foot_Screw_Hole_Ledge_Depth}
@@ -364,17 +397,17 @@ Short_Screw_Hole.Visibility {ShowPayload}
 Short_Screw_Hole.Shape TUBE {.5*Bottom_Screw_ID} {.5*Bottom_Screw_OD} {.5*Bottom_Short_Screw_Height} 0 360
 
 Volume Screw_in_Hole
-Screw_in_Hole.Material Steel_18_8
+Screw_in_Hole.Material PayloadScrewMat
 Screw_in_Hole.Visibility {ShowPayload}
 Screw_in_Hole.Shape TUBE 0 {.5*Bottom_Screw_ID} {.5*Screw_Helix_Length - .5*PCBThickness} 0 360
 
 Volume Screw_Middle
-Screw_Middle.Material Steel_18_8
+Screw_Middle.Material PayloadScrewMat
 Screw_Middle.Visibility {ShowPayload}
 Screw_Middle.Shape TUBE 0 {.5*Screw_Head_Diameter} {.5*FPGA_HV_Offset - .5*PCBThickness} 0 360
 
 Volume Screw_Top
-Screw_Top.Material Steel_18_8
+Screw_Top.Material PayloadScrewMat
 Screw_Top.Visibility {ShowPayload}
 Screw_Top.Shape TUBE 0 {.5*Screw_Head_Diameter} {.5*Screw_Head_Height} 0 360
 
@@ -436,14 +469,14 @@ Done
 
 ####################################################################################
 
-Volume FPGA_Screw
-FPGA_Screw.Material Steel_18_8
-FPGA_Screw.Visibility {ShowPayload}
-FPGA_Screw.Shape TUBE 0 {.5*Bottom_Screw_ID} {.5*PCBThickness} 0 360
+Volume BB_Screw
+BB_Screw.Material PayloadScrewMat
+BB_Screw.Visibility {ShowPayload}
+BB_Screw.Shape TUBE 0 {.5*Bottom_Screw_ID} {.5*PCBThickness} 0 360
 
 Volume BeagleBone
-BeagleBone.Visibility 1
-BeagleBone.Material PCB
+BeagleBone.Visibility {ShowPayload}
+BeagleBone.Material PayloadPCBMat
 BeagleBone.Color 3
 BeagleBone.Shape BOX {.5*BB_Width} {.5*BB_Length} {.5*BB_Depth}
 BeagleBone.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - Bottom_Tall_Screw_Width_Offset - .5*Bottom_Screw_OD - .5*Bottom_Tall_Screw_Width_Spacing} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + Bottom_Tall_Screw_Length_Offset + .5*Bottom_Screw_OD + .5*Bottom_Tall_Screw_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Tall_Screw_Height + .5*BB_Depth}
@@ -452,16 +485,21 @@ BeagleBone.Mother World
 For I 2 {-.5*Bottom_Tall_Screw_Width_Spacing} {Bottom_Tall_Screw_Width_Spacing}
 	For J 2 {.5*Bottom_Tall_Screw_Length_Spacing} {-Bottom_Tall_Screw_Length_Spacing}
 		
-		FPGA_Screw.Copy BB_Screw_%I_%J
+		BB_Screw.Copy BB_Screw_%I_%J
 		BB_Screw_%I_%J.Position $I $J 0
 		BB_Screw_%I_%J.Mother BeagleBone
 		
 	Done
 Done
 
+Volume FPGA_Screw
+FPGA_Screw.Material PayloadScrewMat
+FPGA_Screw.Visibility {ShowPayload}
+FPGA_Screw.Shape TUBE 0 {.5*Bottom_Screw_ID} {.5*PCBThickness} 0 360
+
 Volume FPGA
-FPGA.Visibility 1
-FPGA.Material PCB
+FPGA.Visibility {ShowPayload}
+FPGA.Material PayloadPCBMat
 FPGA.Color 3
 FPGA.Shape BOX {.5*FPGA_Width} {.5*FPGA_Length} {.5*FPGA_Depth}
 FPGA.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD + .5*Bottom_Short_Screw_Width_Spacing} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + .5*FPGA_Depth}
@@ -477,9 +515,14 @@ For I 2 {-.5*Bottom_Short_Screw_Width_Spacing} {Bottom_Short_Screw_Width_Spacing
 	Done
 Done
 
+Volume HV_Screw
+HV_Screw.Material PayloadScrewMat
+HV_Screw.Visibility {ShowPayload}
+HV_Screw.Shape TUBE 0 {.5*Bottom_Screw_ID} {.5*PCBThickness} 0 360
+
 Volume HV
-HV.Visibility 1
-HV.Material PCB
+HV.Visibility {ShowPayload}
+HV.Material PayloadPCBMat
 HV.Color 3
 HV.Shape BOX {.5*HV_Width} {.5*HV_Length} {.5*HV_Depth}
 HV.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD + .5*Bottom_Short_Screw_Width_Spacing} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + .5*HV_Depth}
@@ -488,7 +531,7 @@ HV.Mother World
 For I 2 {-.5*Bottom_Short_Screw_Width_Spacing} {Bottom_Short_Screw_Width_Spacing}
 	For J 2 {.5*Bottom_Short_Screw_Length_Spacing} {-Bottom_Short_Screw_Length_Spacing}
 		
-		FPGA_Screw.Copy HV_Screw_%I_%J
+		HV_Screw.Copy HV_Screw_%I_%J
 		HV_Screw_%I_%J.Position $I $J 0
 		HV_Screw_%I_%J.Mother HV
 		
@@ -498,8 +541,6 @@ Done
 
 
 ##############################################################################
-
-Constant PDU_Wall_Width 2.54
 
 Volume PDU_Wall1
 PDU_Wall1.Material PayloadWallMat
@@ -551,7 +592,7 @@ PDU_FootA_Subset1.Position 0 0 0
 PDU_FootA_Subset1.Mother PDU_FootA
 
 Volume PDU_FootA_Subset1_Hole_Subtraction
-PDU_FootA_Subset1_Hole_Subtraction.Material Steel_18_8
+PDU_FootA_Subset1_Hole_Subtraction.Material PayloadScrewMat
 PDU_FootA_Subset1_Hole_Subtraction.Visibility {ShowPayload}
 PDU_FootA_Subset1_Hole_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Diameter} {.5*PDU_Wall_Width} 0 180
 PDU_FootA_Subset1_Hole_Subtraction.Position 0 0 0
@@ -565,7 +606,7 @@ PDU_FootA_Subset2.Position {.5*Foot_Outer_Radius} {-.5*Foot_Outer_Radius} 0
 PDU_FootA_Subset2.Mother PDU_FootA
 
 Volume PDU_FootA_Subset2_Hole_Subtraction
-PDU_FootA_Subset2_Hole_Subtraction.Material Steel_18_8
+PDU_FootA_Subset2_Hole_Subtraction.Material PayloadScrewMat
 PDU_FootA_Subset2_Hole_Subtraction.Visibility {ShowPayload}
 PDU_FootA_Subset2_Hole_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Diameter} {.5*PDU_Wall_Width} 180 360
 PDU_FootA_Subset2_Hole_Subtraction.Position {-.5*Foot_Outer_Radius} {.5*Foot_Outer_Radius} 0
@@ -602,7 +643,7 @@ PDU_FootB_Subset1.Position 0 0 0
 PDU_FootB_Subset1.Mother PDU_FootB
 
 Volume PDU_FootB_Subset1_Hole_Subtraction
-PDU_FootB_Subset1_Hole_Subtraction.Material Steel_18_8
+PDU_FootB_Subset1_Hole_Subtraction.Material PayloadScrewMat
 PDU_FootB_Subset1_Hole_Subtraction.Visibility {ShowPayload}
 PDU_FootB_Subset1_Hole_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Diameter} {.5*PDU_Wall_Width} 0 180
 PDU_FootB_Subset1_Hole_Subtraction.Position 0 0 0
@@ -616,7 +657,7 @@ PDU_FootB_Subset2.Position {-.5*Foot_Outer_Radius} {-.5*Foot_Outer_Radius} 0
 PDU_FootB_Subset2.Mother PDU_FootB
 
 Volume PDU_FootB_Subset2_Hole_Subtraction
-PDU_FootB_Subset2_Hole_Subtraction.Material Steel_18_8
+PDU_FootB_Subset2_Hole_Subtraction.Material PayloadScrewMat
 PDU_FootB_Subset2_Hole_Subtraction.Visibility {ShowPayload}
 PDU_FootB_Subset2_Hole_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Diameter} {.5*PDU_Wall_Width} 180 360
 PDU_FootB_Subset2_Hole_Subtraction.Position {.5*Foot_Outer_Radius} {.5*Foot_Outer_Radius} 0
@@ -653,7 +694,7 @@ PDU_FootC_Subset1.Position 0 0 0
 PDU_FootC_Subset1.Mother PDU_FootC
 
 Volume PDU_FootC_Subset1_Hole_Subtraction
-PDU_FootC_Subset1_Hole_Subtraction.Material Steel_18_8
+PDU_FootC_Subset1_Hole_Subtraction.Material PayloadScrewMat
 PDU_FootC_Subset1_Hole_Subtraction.Visibility {ShowPayload}
 PDU_FootC_Subset1_Hole_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Diameter} {.5*PDU_Wall_Width} 0 180
 PDU_FootC_Subset1_Hole_Subtraction.Position 0 0 0
@@ -667,7 +708,7 @@ PDU_FootC_Subset2.Position 0 {-.5*Foot_Outer_Radius} 0
 PDU_FootC_Subset2.Mother PDU_FootC
 
 Volume PDU_FootC_Subset2_Hole_Subtraction
-PDU_FootC_Subset2_Hole_Subtraction.Material Steel_18_8
+PDU_FootC_Subset2_Hole_Subtraction.Material PayloadScrewMat
 PDU_FootC_Subset2_Hole_Subtraction.Visibility {ShowPayload}
 PDU_FootC_Subset2_Hole_Subtraction.Shape TUBE 0 {.5*Foot_Screw_Hole_Diameter} {.5*PDU_Wall_Width} 180 360
 PDU_FootC_Subset2_Hole_Subtraction.Position 0 {.5*Foot_Outer_Radius} 0
@@ -708,15 +749,6 @@ PDU_FootC4.Rotation 0 0 270
 PDU_FootC4.Mother World
 
 #################################################################################
-
-Constant PDU_Wall2_Hole_Center_Width 1.905
-Constant PDU_Wall2_Hole_Center_Height 1.0668
-Constant PDU_Wall2_Hole_Wing_Width 0.4318
-Constant PDU_Wall2_Hole_Wing_Radius 0.2794
-Constant PDU_Wall2_Hole_Ledge_Width 0.2286
-Constant PDU_Wall2_Hole_Ledge_Depth 0.1524
-Constant PDU_Wall2_Hole_Width_Offset 0.381
-Constant PDU_Wall2_Hole_Length_Offset 1.27
 
 Volume PDU_Wall2_Hole
 PDU_Wall2_Hole.Material PayloadWallMat
@@ -784,10 +816,55 @@ PDU_Wall2_Hole.Copy PDU_Wall2_Hole2
 PDU_Wall2_Hole2.Position {PDU_Wall2_Hole_Length_Offset + PDU_Wall2_Hole_Ledge_Width + PDU_Wall2_Hole_Wing_Radius + PDU_Wall2_Hole_Wing_Width + .5*PDU_Wall2_Hole_Center_Width} 0 {.5*PDU_Wall_Width - PDU_Wall2_Hole_Width_Offset - .5*PDU_Wall2_Hole_Center_Height}
 PDU_Wall2_Hole2.Mother PDU_Wall2
 
+################################################################################
 
+Volume PDU_Screw_Hole
+PDU_Screw_Hole.Material PayloadWallMat
+PDU_Screw_Hole.Visibility {ShowPayload}
+PDU_Screw_Hole.Shape Tube {.5*PDU_Screw_ID} {.5*PDU_Screw_OD} {.5*PDU_Screw_Height} 0 360
 
+Volume PDU_Screw_Insert
+PDU_Screw_Insert.Material PayloadScrewMat
+PDU_Screw_Insert.Visibility {ShowPayload}
+PDU_Screw_Insert.Shape Tube 0 {.5*PDU_Screw_ID} {.5*Screw_Helix_Length - .5*PDU_Height} 0 360
 
+For I 3 {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD} {-PDU_Screw_Spacing}
+	For J 3 {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD} {PDU_Screw_Spacing}
+		
+		PDU_Screw_Hole.Copy PDU_Screw_Hole_%I_%J
+		PDU_Screw_Hole_%I_%J.Position $I $J {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + .5*PDU_Screw_Height}
+		PDU_Screw_Hole_%I_%J.Mother World
+		
+		PDU_Screw_Insert.Copy PDU_Screw_Insert_%I_%J
+		PDU_Screw_Insert_%I_%J.Position $I $J {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height - .5*Screw_Helix_Length + .5*PDU_Height}
+		PDU_Screw_Insert_%I_%J.Mother World
+		
+	Done
+Done
 
+################################################################################
+
+Volume PDU_Rectangle
+PDU_Rectangle.Material PayloadWallMat
+PDU_Rectangle.Visibility {ShowPayload}
+PDU_Rectangle.Shape BOX {.5*PDU_Rectangle_Width} {.5*PDU_Rectangle_Length} {.5*PDU_Rectangle_Height}
+
+For I 2 {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Rectangle_Width_Offset - .5*PDU_Rectangle_Width} {-PDU_Rectangle_Spacing - PDU_Rectangle_Width}
+		
+		PDU_Rectangle.Copy PDU_Rectangle_%I
+		PDU_Rectangle_%I.Position $I {Wall1_y - .5*Wall_Thickness - PDU_Rectangle_Length_Offset - .5*PDU_Rectangle_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + .5*PDU_Rectangle_Height}
+		PDU_Rectangle_%I.Mother World
+		
+	Done
+Done
+
+Volume PDU
+PDU.Material PayloadPCBMat
+PDU.Visibility {ShowPayload}
+PDU.Color 3
+PDU.Shape BOX {.5*PDU_Width} {.5*PDU_Length} {.5*PDU_Height}
+PDU.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + .5*PDU_Height}
+PDU.Mother World
 
 
 
