@@ -2,6 +2,12 @@ Constant PayloadWallMat Alu6061
 Constant PayloadScrewMat Steel_18_8
 Constant PayloadPCBMat PCB
 
+Material PBT
+PBT.Density         1.31
+PBT.Component       H   12   
+PBT.Component       C   12  
+PBT.Component       O   4  
+
 // Payload Housing
 Constant Wall_Thickness 0.4
 Constant Wall1_Length 16.51
@@ -92,6 +98,12 @@ Constant PDU_Rectangle_Spacing 3.0734
 Constant PDU_Width 12.1031
 Constant PDU_Length 12.1031
 Constant PDU_Height 0.16002
+
+Constant DB9_Width 3.0734
+Constant DB9_Length 1.143
+Constant DB9_Height 1.0668
+Constant DB9_Steel_Face_Thickness 0.1016
+Constant DB9_Width_Offset 1.4732
 
 // Aluminum box, 0.4 cm thick*/
 
@@ -889,6 +901,201 @@ For I 3 {PDU_Screw_Spacing} {-PDU_Screw_Spacing}
 		
 	Done
 Done
+
+################################################################################
+
+Volume DB9
+DB9.Material Vacuum
+DB9.Visibility 0
+DB9.Shape BOX {.5*DB9_Width} {.5*DB9_Length + .5*DB9_Steel_Face_Thickness} {.5*DB9_Height}
+
+Volume DB9_PBT
+DB9_PBT.Material PBT
+DB9_PBT.Visibility {ShowPayload}
+DB9_PBT.Shape BOX {.5*DB9_Width} {.5*DB9_Length} {.5*DB9_Height}
+DB9_PBT.Position 0 {-.5*DB9_Steel_Face_Thickness} 0
+DB9_PBT.Mother DB9
+
+Volume DB9_Steel
+DB9_Steel.Material Steel_18_8
+DB9_Steel.Visibility {ShowPayload}
+DB9_Steel.Shape BOX {.5*DB9_Width} {.5*DB9_Steel_Face_Thickness} {.5*DB9_Height}
+DB9_Steel.Position 0 {.5*DB9_Length} 0
+DB9_Steel.Mother DB9
+
+DB9.Copy DB9_1
+DB9_1.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing + .5*PDU_Width - DB9_Width_Offset - .5*DB9_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing + .5*PDU_Length - .5*DB9_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*DB9_Height}
+DB9_1.Mother World
+
+DB9.Copy DB9_2
+DB9_2.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing - .5*PDU_Width + DB9_Width_Offset + .5*DB9_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing + .5*PDU_Length - .5*DB9_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*DB9_Height}
+DB9_2.Mother World
+
+DB9.Copy DB9_3
+DB9_3.Rotation 0 0 180
+DB9_3.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing + .5*PDU_Width - DB9_Width_Offset - .5*DB9_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + .5*DB9_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*DB9_Height}
+DB9_3.Mother World
+
+DB9.Copy DB9_4
+DB9_4.Rotation 0 0 180
+DB9_4.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing - .5*PDU_Width + DB9_Width_Offset + .5*DB9_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + .5*DB9_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*DB9_Height}
+DB9_4.Mother World
+
+Constant PDU_Box2_Width 0.508
+Constant PDU_Box2_Length 0.9398
+Constant PDU_Box2_Height 0.4064
+Constant PDU_Box2_Width_Offset1 3.0988
+Constant PDU_Box2_Width_Offset2 2.7432
+Constant PDU_Box2_Length_Offset 2.2352
+
+Volume PDU_Box2
+PDU_Box2.Material PBT
+PDU_Box2.Visibility {ShowPayload}
+PDU_Box2.Shape BOX {.5*PDU_Box2_Width} {.5*PDU_Box2_Length} {.5*PDU_Box2_Height}
+
+PDU_Box2.Copy PDU_Box2_1
+PDU_Box2_1.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing - .5*PDU_Width + PDU_Box2_Width_Offset1 + .5*PDU_Box2_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box2_Length_Offset + .5*PDU_Box2_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box2_Height}
+PDU_Box2_1.Mother World
+
+PDU_Box2.Copy PDU_Box2_2
+PDU_Box2_2.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing + .5*PDU_Width - PDU_Box2_Width_Offset2 - .5*PDU_Box2_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box2_Length_Offset + .5*PDU_Box2_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box2_Height}
+PDU_Box2_2.Mother World
+
+Constant PDU_Box3_Width 0.6858
+Constant PDU_Box3_Length 0.4064
+Constant PDU_Box3_Height 0.127
+Constant PDU_Box3_Width_Offset1 2.6416
+Constant PDU_Box3_Width_Offset2 2.921
+Constant PDU_Box3_Length_Offset 3.7592
+
+Volume PDU_Box3
+PDU_Box3.Material PBT
+PDU_Box3.Visibility {ShowPayload}
+PDU_Box3.Shape BOX {.5*PDU_Box3_Width} {.5*PDU_Box3_Length} {.5*PDU_Box3_Height}
+
+PDU_Box3.Copy PDU_Box3_1
+PDU_Box3_1.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing - .5*PDU_Width + PDU_Box3_Width_Offset1 + .5*PDU_Box3_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box3_Length_Offset + .5*PDU_Box3_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box3_Height}
+PDU_Box3_1.Mother World
+
+PDU_Box3.Copy PDU_Box3_2
+PDU_Box3_2.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing + .5*PDU_Width - PDU_Box3_Width_Offset2 - .5*PDU_Box3_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box3_Length_Offset + .5*PDU_Box3_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box3_Height}
+PDU_Box3_2.Mother World
+
+Constant PDU_Box4_Width 0.7112
+Constant PDU_Box4_Length 0.6858
+Constant PDU_Box4_Height 0.381
+Constant PDU_Box4_Width_Offset1 2.2098
+Constant PDU_Box4_Width_Offset2 2.4638
+Constant PDU_Box4_Length_Offset 4.699
+Constant PDU_Box4_Width_Spacing 0.889
+
+Volume PDU_Box4
+PDU_Box4.Material PBT
+PDU_Box4.Visibility {ShowPayload}
+PDU_Box4.Shape BOX {.5*PDU_Box4_Width} {.5*PDU_Box4_Length} {.5*PDU_Box4_Height}
+
+PDU_Box4.Copy PDU_Box4_1
+PDU_Box4_1.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing - .5*PDU_Width + PDU_Box4_Width_Offset1 + .5*PDU_Box4_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box4_Length_Offset + .5*PDU_Box4_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box4_Height}
+PDU_Box4_1.Mother World
+
+PDU_Box4.Copy PDU_Box4_1b
+PDU_Box4_1b.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing - .5*PDU_Width + PDU_Box4_Width_Offset1 + .5*PDU_Box4_Width + PDU_Box4_Width_Spacing} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box4_Length_Offset + .5*PDU_Box4_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box4_Height}
+PDU_Box4_1b.Mother World
+
+PDU_Box4.Copy PDU_Box4_2
+PDU_Box4_2.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing + .5*PDU_Width - PDU_Box4_Width_Offset2 - .5*PDU_Box4_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box4_Length_Offset + .5*PDU_Box4_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box4_Height}
+PDU_Box4_2.Mother World
+
+PDU_Box4.Copy PDU_Box4_2b
+PDU_Box4_2b.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing + .5*PDU_Width - PDU_Box4_Width_Offset2 - .5*PDU_Box4_Width - PDU_Box4_Width_Spacing} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box4_Length_Offset + .5*PDU_Box4_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box4_Height}
+PDU_Box4_2b.Mother World
+
+Constant PDU_Box5_Width 0.3048
+Constant PDU_Box5_Length 0.1778
+Constant PDU_Box5_Height 0.1016
+Constant PDU_Box5_Width_Offset1 2.8448
+Constant PDU_Box5_Width_Offset2 3.1242
+Constant PDU_Box5_Length_Offset 5.842
+
+Volume PDU_Box5
+PDU_Box5.Material PBT
+PDU_Box5.Visibility {ShowPayload}
+PDU_Box5.Shape BOX {.5*PDU_Box5_Width} {.5*PDU_Box5_Length} {.5*PDU_Box5_Height}
+
+PDU_Box5.Copy PDU_Box5_1
+PDU_Box5_1.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing - .5*PDU_Width + PDU_Box5_Width_Offset1 + .5*PDU_Box5_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box5_Length_Offset + .5*PDU_Box5_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box5_Height}
+PDU_Box5_1.Mother World
+
+PDU_Box5.Copy PDU_Box5_2
+PDU_Box5_2.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing + .5*PDU_Width - PDU_Box5_Width_Offset2 - .5*PDU_Box5_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box5_Length_Offset + .5*PDU_Box5_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box5_Height}
+PDU_Box5_2.Mother World
+
+Constant PDU_Box6_Width 2.54
+Constant PDU_Box6_Length 2.54
+Constant PDU_Box6_Height 1.016
+Constant PDU_Box6_Width_Offset1 1.7272
+Constant PDU_Box6_Width_Offset2 2.0066
+Constant PDU_Box6_Length_Offset 6.2738
+
+Volume PDU_Box6
+PDU_Box6.Material PBT
+PDU_Box6.Visibility {ShowPayload}
+PDU_Box6.Shape BOX {.5*PDU_Box6_Width} {.5*PDU_Box6_Length} {.5*PDU_Box6_Height}
+
+PDU_Box6.Copy PDU_Box6_1
+PDU_Box6_1.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing - .5*PDU_Width + PDU_Box6_Width_Offset1 + .5*PDU_Box6_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box6_Length_Offset + .5*PDU_Box6_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box6_Height}
+PDU_Box6_1.Mother World
+
+PDU_Box6.Copy PDU_Box6_2
+PDU_Box6_2.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing + .5*PDU_Width - PDU_Box6_Width_Offset2 - .5*PDU_Box6_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box6_Length_Offset + .5*PDU_Box6_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box6_Height}
+PDU_Box6_2.Mother World
+
+Constant PDU_Box7_Width 0.31496
+Constant PDU_Box7_Length 0.1778
+Constant PDU_Box7_Height 0.10668
+Constant PDU_Box7_Width_Offset1 3.11658
+Constant PDU_Box7_Width_Offset2 2.8448
+Constant PDU_Box7_Length_Offset 9.5123
+
+Volume PDU_Box7
+PDU_Box7.Material PBT
+PDU_Box7.Visibility {ShowPayload}
+PDU_Box7.Shape BOX {.5*PDU_Box7_Width} {.5*PDU_Box7_Length} {.5*PDU_Box7_Height}
+
+PDU_Box7.Copy PDU_Box7_1
+PDU_Box7_1.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing - .5*PDU_Width + PDU_Box7_Width_Offset1 + .5*PDU_Box7_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box7_Length_Offset + .5*PDU_Box7_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box7_Height}
+PDU_Box7_1.Mother World
+
+PDU_Box7.Copy PDU_Box7_2
+PDU_Box7_2.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing + .5*PDU_Width - PDU_Box7_Width_Offset2 - .5*PDU_Box7_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box7_Length_Offset + .5*PDU_Box7_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box7_Height}
+PDU_Box7_2.Mother World
+
+Constant PDU_Box8_Width 0.762
+Constant PDU_Box8_Length 0.57912
+Constant PDU_Box8_Height 0.2667
+Constant PDU_Box8_Width_Offset1 2.89052
+Constant PDU_Box8_Width_Offset2 2.61874
+Constant PDU_Box8_Length_Offset 9.83488
+
+Volume PDU_Box8
+PDU_Box8.Material PBT
+PDU_Box8.Visibility {ShowPayload}
+PDU_Box8.Shape BOX {.5*PDU_Box8_Width} {.5*PDU_Box8_Length} {.5*PDU_Box8_Height}
+
+PDU_Box8.Copy PDU_Box8_1
+PDU_Box8_1.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing - .5*PDU_Width + PDU_Box8_Width_Offset1 + .5*PDU_Box8_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box8_Length_Offset + .5*PDU_Box8_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box8_Height}
+PDU_Box8_1.Mother World
+
+PDU_Box8.Copy PDU_Box8_2
+PDU_Box8_2.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing + .5*PDU_Width - PDU_Box8_Width_Offset2 - .5*PDU_Box8_Width} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing - .5*PDU_Length + PDU_Box8_Length_Offset + .5*PDU_Box8_Length} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*PDU_Box8_Height}
+PDU_Box8_2.Mother World
+
+
+
+
+
+
+
 
 
 
