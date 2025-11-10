@@ -828,6 +828,11 @@ PDU_Screw_Insert.Material PayloadScrewMat
 PDU_Screw_Insert.Visibility {ShowPayload}
 PDU_Screw_Insert.Shape Tube 0 {.5*PDU_Screw_ID} {.5*Screw_Helix_Length - .5*PDU_Height} 0 360
 
+Volume PDU_Screw_Head
+PDU_Screw_Head.Material PayloadScrewMat
+PDU_Screw_Head.Visibility {ShowPayload}
+PDU_Screw_Head.Shape Tube 0 {.5*Screw_Head_Diameter} {.5*Screw_Head_Height} 0 360
+
 For I 3 {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD} {-PDU_Screw_Spacing}
 	For J 3 {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD} {PDU_Screw_Spacing}
 		
@@ -838,6 +843,10 @@ For I 3 {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .
 		PDU_Screw_Insert.Copy PDU_Screw_Insert_%I_%J
 		PDU_Screw_Insert_%I_%J.Position $I $J {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height - .5*Screw_Helix_Length + .5*PDU_Height}
 		PDU_Screw_Insert_%I_%J.Mother World
+		
+		PDU_Screw_Head.Copy PDU_Screw_Head_%I_%J
+		PDU_Screw_Head_%I_%J.Position $I $J {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + PDU_Height + .5*Screw_Head_Height}
+		PDU_Screw_Head_%I_%J.Mother World
 		
 	Done
 Done
@@ -866,6 +875,20 @@ PDU.Shape BOX {.5*PDU_Width} {.5*PDU_Length} {.5*PDU_Height}
 PDU.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Screw_Width_Offset - .5*PDU_Screw_OD - PDU_Screw_Spacing} {Wall1_y - Wall1_2_Offset + .5*Wall_Thickness + PDU_Screw_Length_Offset + .5*PDU_Screw_OD + PDU_Screw_Spacing} {Wall1_z - .5*Wall1_Width - PDU_Wall_Width + Wall_Thickness + PDU_Screw_Height + .5*PDU_Height}
 PDU.Mother World
 
+Volume PDU_Screw
+PDU_Screw.Material PayloadScrewMat
+PDU_Screw.Visibility {ShowPayload}
+PDU_Screw.Shape Tube 0 {.5*PDU_Screw_ID} {.5*PDU_Height} 0 360
+
+For I 3 {PDU_Screw_Spacing} {-PDU_Screw_Spacing}
+	For J 3 {PDU_Screw_Spacing} {-PDU_Screw_Spacing}
+				
+		PDU_Screw.Copy PDU_Screw_%I_%J
+		PDU_Screw_%I_%J.Position $I $J 0
+		PDU_Screw_%I_%J.Mother PDU
+		
+	Done
+Done
 
 
 
