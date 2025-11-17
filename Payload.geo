@@ -57,9 +57,10 @@ Constant BB_Width 5.461
 Constant BB_Length 8.636
 Constant BB_Depth {PCBThickness}
 
-Constant FPGA_Width 6.3246
+Constant FPGA_Width 6.4
 Constant FPGA_Length 7.5184
 Constant FPGA_Depth {PCBThickness}
+Constant FPGA_Width_Offset 1.2573
 
 Constant HV_Width 6.4
 Constant HV_Length 4.9
@@ -513,10 +514,10 @@ FPGA.Visibility {ShowPayload}
 FPGA.Material PayloadPCBMat
 FPGA.Color 3
 FPGA.Shape BOX {.5*FPGA_Width} {.5*FPGA_Length} {.5*FPGA_Depth}
-FPGA.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD + .5*Bottom_Short_Screw_Width_Spacing} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + .5*FPGA_Depth}
+FPGA.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + .5*FPGA_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + .5*FPGA_Depth}
 FPGA.Mother World
 
-For I 2 {-.5*Bottom_Short_Screw_Width_Spacing} {Bottom_Short_Screw_Width_Spacing}
+For I 2 {-.5*FPGA_Width + FPGA_Width_Offset} {Bottom_Short_Screw_Width_Spacing}
 	For J 3 {Bottom_Short_Screw_Length_Spacing} {-Bottom_Short_Screw_Length_Spacing}
 		
 		FPGA_Screw.Copy FPGA_Screw_%I_%J
@@ -536,10 +537,10 @@ HV.Visibility {ShowPayload}
 HV.Material PayloadPCBMat
 HV.Color 3
 HV.Shape BOX {.5*HV_Width} {.5*HV_Length} {.5*HV_Depth}
-HV.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD + .5*Bottom_Short_Screw_Width_Spacing} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + .5*HV_Depth}
+HV.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + .5*HV_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + .5*HV_Depth}
 HV.Mother World
 
-For I 2 {-.5*Bottom_Short_Screw_Width_Spacing} {Bottom_Short_Screw_Width_Spacing}
+For I 2 {-.5*HV_Width + FPGA_Width_Offset} {Bottom_Short_Screw_Width_Spacing}
 	For J 2 {.5*Bottom_Short_Screw_Length_Spacing} {-Bottom_Short_Screw_Length_Spacing}
 		
 		HV_Screw.Copy HV_Screw_%I_%J
@@ -1282,17 +1283,711 @@ BB_Box14.Position {Wall1_x + .5*Wall1_Length - Wall_Thickness - Bottom_Tall_Scre
 BB_Box14.Mother World
 
 
-Echo Center of hole:
-Echo {Wall1_x + .5*Wall1_Length - 3*Foot_Outer_Radius - PDU_Wall2_Hole_Length_Offset - PDU_Wall2_Hole_Ledge_Width - PDU_Wall2_Hole_Wing_Radius - PDU_Wall2_Hole_Wing_Width - .5*PDU_Wall2_Hole_Center_Width}
-Echo Outside wall:
-Echo {Wall1_x + .5*Wall1_Length}
-Echo PDU Board Edge:
-Echo {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Offset}
-Echo PDU Plug:
-Echo {Wall1_x + .5*Wall1_Length - Wall_Thickness - PDU_Offset - DB9_Width_Offset - .5*DB9_Width}
+#######################################################################################
 
-Echo Center of hole - Outside wall:
-Echo {Wall1_x + .5*Wall1_Length - 3*Foot_Outer_Radius - PDU_Wall2_Hole_Length_Offset - PDU_Wall2_Hole_Ledge_Width - PDU_Wall2_Hole_Wing_Radius - PDU_Wall2_Hole_Wing_Width - .5*PDU_Wall2_Hole_Center_Width - Wall1_x - .5*Wall1_Length}
+
+Constant FPGA_Box1_Width 0.25908
+Constant FPGA_Box1_Length 2.23774
+Constant FPGA_Box1_Height 0.4064
+Constant FPGA_Box1_Width_Offset 5.77088
+Constant FPGA_Box1_Length_Offset 0.2286
+Constant FPGA_Box1_Length_Spacing 2.3368
+
+Volume FPGA_Box1a
+FPGA_Box1a.Material PBT
+FPGA_Box1a.Visibility {ShowPayload}
+FPGA_Box1a.Shape BOX {.5*FPGA_Box1_Width} {.5*FPGA_Box1_Length} {.5*FPGA_Box1_Height}
+FPGA_Box1a.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Box1_Width_Offset - .5*FPGA_Box1_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Box1_Length_Offset + .5*FPGA_Box1_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + .5*FPGA_Box1_Height}
+FPGA_Box1a.Mother World
+
+Volume FPGA_Box1b
+FPGA_Box1b.Material PBT
+FPGA_Box1b.Visibility {ShowPayload}
+FPGA_Box1b.Shape BOX {.5*FPGA_Box1_Width} {.5*FPGA_Box1_Length} {.5*FPGA_Box1_Height}
+FPGA_Box1b.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Box1_Width_Offset - .5*FPGA_Box1_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Box1_Length_Offset + .5*FPGA_Box1_Length + FPGA_Box1_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + .5*FPGA_Box1_Height}
+FPGA_Box1b.Mother World
+
+Volume FPGA_Box1c
+FPGA_Box1c.Material PBT
+FPGA_Box1c.Visibility {ShowPayload}
+FPGA_Box1c.Shape BOX {.5*FPGA_Box1_Width} {.5*FPGA_Box1_Length} {.5*FPGA_Box1_Height}
+FPGA_Box1c.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Box1_Width_Offset - .5*FPGA_Box1_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Box1_Length_Offset + .5*FPGA_Box1_Length + 2*FPGA_Box1_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + .5*FPGA_Box1_Height}
+FPGA_Box1c.Mother World
+
+Constant FPGA_Box2_Width 0.4318
+Constant FPGA_Box2_Length 0.4826
+Constant FPGA_Box2_Height 0.127
+Constant FPGA_Box2_Width_Offset 4.7244
+Constant FPGA_Box2_Length_Offset 0.7366
+
+Volume FPGA_Box2
+FPGA_Box2.Material PBT
+FPGA_Box2.Visibility {ShowPayload}
+FPGA_Box2.Shape BOX {.5*FPGA_Box2_Width} {.5*FPGA_Box2_Length} {.5*FPGA_Box2_Height}
+FPGA_Box2.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Box2_Width_Offset - .5*FPGA_Box2_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Box2_Length_Offset + .5*FPGA_Box2_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + .5*FPGA_Box2_Height}
+FPGA_Box2.Mother World
+
+Constant FPGA_Box3_Width 0.3556
+Constant FPGA_Box3_Length 0.4318
+Constant FPGA_Box3_Height 0.1778
+Constant FPGA_Box3_Width_Offset 1.7272
+Constant FPGA_Box3_Length_Offset 0.635
+Constant FPGA_Box3_Length_Spacing 0.7112
+
+Volume FPGA_Box3a
+FPGA_Box3a.Material PBT
+FPGA_Box3a.Visibility {ShowPayload}
+FPGA_Box3a.Shape BOX {.5*FPGA_Box3_Width} {.5*FPGA_Box3_Length} {.5*FPGA_Box3_Height}
+FPGA_Box3a.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Box3_Width_Offset - .5*FPGA_Box3_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Box3_Length_Offset + .5*FPGA_Box3_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + .5*FPGA_Box3_Height}
+FPGA_Box3a.Mother World
+
+Volume FPGA_Box3b
+FPGA_Box3b.Material PBT
+FPGA_Box3b.Visibility {ShowPayload}
+FPGA_Box3b.Shape BOX {.5*FPGA_Box3_Width} {.5*FPGA_Box3_Length} {.5*FPGA_Box3_Height}
+FPGA_Box3b.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Box3_Width_Offset - .5*FPGA_Box3_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Box3_Length_Offset + .5*FPGA_Box3_Length + FPGA_Box3_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + .5*FPGA_Box3_Height}
+FPGA_Box3b.Mother World
+
+Volume FPGA_Box3c
+FPGA_Box3c.Material PBT
+FPGA_Box3c.Visibility {ShowPayload}
+FPGA_Box3c.Shape BOX {.5*FPGA_Box3_Width} {.5*FPGA_Box3_Length} {.5*FPGA_Box3_Height}
+FPGA_Box3c.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Box3_Width_Offset - .5*FPGA_Box3_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Box3_Length_Offset + .5*FPGA_Box3_Length + 2*FPGA_Box3_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + .5*FPGA_Box3_Height}
+FPGA_Box3c.Mother World
+
+Constant FPGA_Box4_Width 0.1524
+Constant FPGA_Box4_Length 0.2794
+Constant FPGA_Box4_Height 0.1778
+Constant FPGA_Box4_Width_Offset 0.8636
+Constant FPGA_Box4_Length_Offset 1.016
+
+Volume FPGA_Box4
+FPGA_Box4.Material PBT
+FPGA_Box4.Visibility {ShowPayload}
+FPGA_Box4.Shape BOX {.5*FPGA_Box4_Width} {.5*FPGA_Box4_Length} {.5*FPGA_Box4_Height}
+FPGA_Box4.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Box4_Width_Offset - .5*FPGA_Box4_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Box4_Length_Offset + .5*FPGA_Box4_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + .5*FPGA_Box4_Height}
+FPGA_Box4.Mother World
+
+Constant FPGA_Box5_Width 0.4064
+Constant FPGA_Box5_Length 0.8382
+Constant FPGA_Box5_Height 0.4572
+Constant FPGA_Box5_Width_Offset 0.127
+Constant FPGA_Box5_Length_Offset 2.0574
+
+Volume FPGA_Box5
+FPGA_Box5.Material PBT
+FPGA_Box5.Visibility {ShowPayload}
+FPGA_Box5.Shape BOX {.5*FPGA_Box5_Width} {.5*FPGA_Box5_Length} {.5*FPGA_Box5_Height}
+FPGA_Box5.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Box5_Width_Offset - .5*FPGA_Box5_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Box5_Length_Offset + .5*FPGA_Box5_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + .5*FPGA_Box5_Height}
+FPGA_Box5.Mother World
+
+Constant FPGA_Box6_Width 0.4318
+Constant FPGA_Box6_Length 0.4826
+Constant FPGA_Box6_Height 0.127
+Constant FPGA_Box6_Width_Offset 1.4986
+Constant FPGA_Box6_Length_Offset 3.6068
+
+Volume FPGA_Box6
+FPGA_Box6.Material PBT
+FPGA_Box6.Visibility {ShowPayload}
+FPGA_Box6.Shape BOX {.5*FPGA_Box6_Width} {.5*FPGA_Box6_Length} {.5*FPGA_Box6_Height}
+FPGA_Box6.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Box6_Width_Offset - .5*FPGA_Box6_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Box6_Length_Offset + .5*FPGA_Box6_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + .5*FPGA_Box6_Height}
+FPGA_Box6.Mother World
+
+Constant FPGA_Box7_Width 0.1524
+Constant FPGA_Box7_Length 0.3048
+Constant FPGA_Box7_Height 0.1778
+Constant FPGA_Box7_Width_Offset 0.9398
+Constant FPGA_Box7_Length_Offset 3.683
+
+Volume FPGA_Box7
+FPGA_Box7.Material PBT
+FPGA_Box7.Visibility {ShowPayload}
+FPGA_Box7.Shape BOX {.5*FPGA_Box7_Width} {.5*FPGA_Box7_Length} {.5*FPGA_Box7_Height}
+FPGA_Box7.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Box7_Width_Offset - .5*FPGA_Box7_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Box7_Length_Offset + .5*FPGA_Box7_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + .5*FPGA_Box7_Height}
+FPGA_Box7.Mother World
+
+Constant FPGA_Box8_Width 0.254
+Constant FPGA_Box8_Length 0.254
+Constant FPGA_Box8_Height 0.1524
+Constant FPGA_Box8_Width_Offset 1.143
+Constant FPGA_Box8_Length_Offset 5.0292
+
+Volume FPGA_Box8
+FPGA_Box8.Material PBT
+FPGA_Box8.Visibility {ShowPayload}
+FPGA_Box8.Shape BOX {.5*FPGA_Box8_Width} {.5*FPGA_Box8_Length} {.5*FPGA_Box8_Height}
+FPGA_Box8.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Box8_Width_Offset - .5*FPGA_Box8_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Box8_Length_Offset + .5*FPGA_Box8_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + .5*FPGA_Box8_Height}
+FPGA_Box8.Mother World
+
+Constant FPGA_Box9_Width 0.4064
+Constant FPGA_Box9_Length 0.9398
+Constant FPGA_Box9_Height 0.4572
+Constant FPGA_Box9_Width_Offset 0.127
+Constant FPGA_Box9_Length_Offset 5.6134
+
+Volume FPGA_Box9
+FPGA_Box9.Material PBT
+FPGA_Box9.Visibility {ShowPayload}
+FPGA_Box9.Shape BOX {.5*FPGA_Box9_Width} {.5*FPGA_Box9_Length} {.5*FPGA_Box9_Height}
+FPGA_Box9.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Box9_Width_Offset - .5*FPGA_Box9_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Box9_Length_Offset + .5*FPGA_Box9_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + .5*FPGA_Box9_Height}
+FPGA_Box9.Mother World
+
+Constant FPGA_Box10_Width 0.4064
+Constant FPGA_Box10_Length 0.5334
+Constant FPGA_Box10_Height 0.4572
+Constant FPGA_Box10_Width_Offset 0.127
+Constant FPGA_Box10_Length_Offset 0.762
+
+Volume FPGA_Box10
+FPGA_Box10.Material PBT
+FPGA_Box10.Visibility {ShowPayload}
+FPGA_Box10.Shape BOX {.5*FPGA_Box10_Width} {.5*FPGA_Box10_Length} {.5*FPGA_Box10_Height}
+FPGA_Box10.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Box10_Width_Offset - .5*FPGA_Box10_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Box10_Length_Offset + .5*FPGA_Box10_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + .5*FPGA_Box10_Height}
+FPGA_Box10.Mother World
+
+Constant FPGA_Pin_Width 0.0508
+Constant FPGA_Pin_Length 0.0508
+Constant FPGA_Pin_Top_Height 0.1524
+Constant FPGA_Pin_Middle_Height 0.254
+Constant FPGA_Pin_Bottom_Height 0.4064
+Constant FPGA_Pin_Width_Offset 2.6924
+Constant FPGA_Pin_Length_Offset 0.9652
+Constant FPGA_Pin_Width_Spacing 1.524
+Constant FPGA_Pin_Length_Spacing .254
+
+Volume FPGA_Pin
+FPGA_Pin.Material Copper
+FPGA_Pin.Visibility {ShowPayload}
+FPGA_Pin.Shape BOX {.5*FPGA_Pin_Width} {.5*FPGA_Pin_Length} {.5*PCBThickness}
+
+
+For I 2 {.5*FPGA_Width - FPGA_Pin_Width_Offset - .5*FPGA_Pin_Width} {-FPGA_Pin_Width_Spacing}
+	For J 24 {-.5*FPGA_Length + FPGA_Pin_Length_Offset + .5*FPGA_Pin_Length} {FPGA_Pin_Length_Spacing}
+				
+		FPGA_Pin.Copy FPGA_Pin_%I_%J
+		FPGA_Pin_%I_%J.Position $I $J 0
+		FPGA_Pin_%I_%J.Mother FPGA
+		
+	Done
+Done
+
+Volume FPGA_Pin_Bottom
+FPGA_Pin_Bottom.Material Copper
+FPGA_Pin_Bottom.Visibility {ShowPayload}
+FPGA_Pin_Bottom.Shape BOX {.5*FPGA_Pin_Width} {.5*FPGA_Pin_Length} {.5*FPGA_Pin_Bottom_Height}
+
+Volume FPGA_Pin_Middle
+FPGA_Pin_Middle.Material Copper
+FPGA_Pin_Middle.Visibility {ShowPayload}
+FPGA_Pin_Middle.Shape BOX {.5*FPGA_Pin_Width} {.5*FPGA_Pin_Length} {.5*FPGA_Pin_Middle_Height}
+
+Volume FPGA_Pin_Top
+FPGA_Pin_Top.Material Copper
+FPGA_Pin_Top.Visibility {ShowPayload}
+FPGA_Pin_Top.Shape BOX {.5*FPGA_Pin_Width} {.5*FPGA_Pin_Length} {.5*FPGA_Pin_Top_Height}
+
+
+For I 2 {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Pin_Width_Offset - .5*FPGA_Pin_Width} {-FPGA_Pin_Width_Spacing}
+	For J 24 {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Pin_Length_Offset + .5*FPGA_Pin_Length} {FPGA_Pin_Length_Spacing}
+				
+		FPGA_Pin_Bottom.Copy FPGA_Pin_Bottom_%I_%J
+		FPGA_Pin_Bottom_%I_%J.Position $I $J {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height - .5*FPGA_Pin_Bottom_Height}
+		FPGA_Pin_Bottom_%I_%J.Mother World
+		
+		FPGA_Pin_Middle.Copy FPGA_Pin_Middle_%I_%J
+		FPGA_Pin_Middle_%I_%J.Position $I $J {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + .5*FPGA_Pin_Middle_Height}
+		FPGA_Pin_Middle_%I_%J.Mother World
+		
+		FPGA_Pin_Top.Copy FPGA_Pin_Top_%I_%J
+		FPGA_Pin_Top_%I_%J.Position $I $J {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + FPGA_Pin_Middle_Height + .5*FPGA_Stage2_Height + .5*FPGA_Pin_Top_Height}
+		FPGA_Pin_Top_%I_%J.Mother World
+		
+	Done
+Done
+
+Constant FPGA_Stage2_Width 1.778
+Constant FPGA_Stage2_Length 6.985
+Constant FPGA_Stage2_Height 0.1524
+Constant FPGA_Stage2_Length_Offset 0.8636
+
+Volume FPGA_Stage2
+FPGA_Stage2.Material PayloadPCBMat
+FPGA_Stage2.Visibility {ShowPayload}
+FPGA_Stage2.Shape BOX {.5*FPGA_Stage2_Width} {.5*FPGA_Stage2_Length} {.5*FPGA_Stage2_Height}
+FPGA_Stage2.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Pin_Width_Offset - .5*FPGA_Pin_Width - .5*FPGA_Pin_Width_Spacing} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Pin_Length_Offset - FPGA_Stage2_Length_Offset + .5*FPGA_Stage2_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + FPGA_Pin_Middle_Height + .5*FPGA_Stage2_Height}
+FPGA_Stage2.Mother World
+
+Volume FPGA_Stage2_Pin
+FPGA_Stage2_Pin.Material Copper
+FPGA_Stage2_Pin.Visibility {ShowPayload}
+FPGA_Stage2_Pin.Shape BOX {.5*FPGA_Pin_Width} {.5*FPGA_Pin_Length} {.5*FPGA_Stage2_Height}
+
+For I 2 {.5*FPGA_Pin_Width_Spacing} {-FPGA_Pin_Width_Spacing}
+	For J 24 {-.5*FPGA_Stage2_Length + FPGA_Stage2_Length_Offset + .5*FPGA_Pin_Length} {FPGA_Pin_Length_Spacing}
+				
+		FPGA_Stage2_Pin.Copy FPGA_Stage2_Pin_%I_%J
+		FPGA_Stage2_Pin_%I_%J.Position $I $J 0
+		FPGA_Stage2_Pin_%I_%J.Mother FPGA_Stage2
+		
+	Done
+Done
+
+Constant FPGA_Stage2_Box1_Width 1.5748
+Constant FPGA_Stage2_Box1_Length 0.508
+Constant FPGA_Stage2_Box1_Height 0.8636
+Constant FPGA_Stage2_Box1_Width_Offset 0.1016
+Constant FPGA_Stage2_Box1_Length_Offset 0.127
+
+Volume FPGA_Stage2_Box1
+FPGA_Stage2_Box1.Material PBT
+FPGA_Stage2_Box1.Visibility {ShowPayload}
+FPGA_Stage2_Box1.Shape BOX {.5*FPGA_Stage2_Box1_Width} {.5*FPGA_Stage2_Box1_Length} {.5*FPGA_Stage2_Box1_Height}
+FPGA_Stage2_Box1.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Pin_Width_Offset - .5*FPGA_Pin_Width - .5*FPGA_Pin_Width_Spacing + .5*FPGA_Stage2_Width - FPGA_Stage2_Box1_Width_Offset - .5*FPGA_Stage2_Box1_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Pin_Length_Offset - FPGA_Stage2_Length_Offset + FPGA_Stage2_Box1_Length_Offset + .5*FPGA_Stage2_Box1_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + FPGA_Pin_Middle_Height + FPGA_Stage2_Height + .5*FPGA_Stage2_Box1_Height}
+FPGA_Stage2_Box1.Mother World
+
+Constant FPGA_Stage2_Box2_Width 0.4318
+Constant FPGA_Stage2_Box2_Length 0.4318
+Constant FPGA_Stage2_Box2_Height 0.2794
+Constant FPGA_Stage2_Box2_Width_Offset 0.6858
+Constant FPGA_Stage2_Box2_Length_Offset 0.8128
+Constant FPGA_Stage2_Box2_Length_Spacing 0.6604
+
+Volume FPGA_Stage2_Box2a
+FPGA_Stage2_Box2a.Material PBT
+FPGA_Stage2_Box2a.Visibility {ShowPayload}
+FPGA_Stage2_Box2a.Shape BOX {.5*FPGA_Stage2_Box2_Width} {.5*FPGA_Stage2_Box2_Length} {.5*FPGA_Stage2_Box2_Height}
+FPGA_Stage2_Box2a.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Pin_Width_Offset - .5*FPGA_Pin_Width - .5*FPGA_Pin_Width_Spacing + .5*FPGA_Stage2_Width - FPGA_Stage2_Box2_Width_Offset - .5*FPGA_Stage2_Box2_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Pin_Length_Offset - FPGA_Stage2_Length_Offset + FPGA_Stage2_Box2_Length_Offset + .5*FPGA_Stage2_Box2_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + FPGA_Pin_Middle_Height + FPGA_Stage2_Height + .5*FPGA_Stage2_Box2_Height}
+FPGA_Stage2_Box2a.Mother World
+
+Volume FPGA_Stage2_Box2b
+FPGA_Stage2_Box2b.Material PBT
+FPGA_Stage2_Box2b.Visibility {ShowPayload}
+FPGA_Stage2_Box2b.Shape BOX {.5*FPGA_Stage2_Box2_Width} {.5*FPGA_Stage2_Box2_Length} {.5*FPGA_Stage2_Box2_Height}
+FPGA_Stage2_Box2b.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Pin_Width_Offset - .5*FPGA_Pin_Width - .5*FPGA_Pin_Width_Spacing + .5*FPGA_Stage2_Width - FPGA_Stage2_Box2_Width_Offset - .5*FPGA_Stage2_Box2_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Pin_Length_Offset - FPGA_Stage2_Length_Offset + FPGA_Stage2_Box2_Length_Offset + .5*FPGA_Stage2_Box2_Length + FPGA_Stage2_Box2_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + FPGA_Pin_Middle_Height + FPGA_Stage2_Height + .5*FPGA_Stage2_Box2_Height}
+FPGA_Stage2_Box2b.Mother World
+
+Constant FPGA_Stage2_Box3_Width 0.7874
+Constant FPGA_Stage2_Box3_Length 0.6096
+Constant FPGA_Stage2_Box3_Height 0.0762
+Constant FPGA_Stage2_Box3_Width_Offset 0.6096
+Constant FPGA_Stage2_Box3_Length_Offset 2.6416
+
+Volume FPGA_Stage2_Box3
+FPGA_Stage2_Box3.Material PBT
+FPGA_Stage2_Box3.Visibility {ShowPayload}
+FPGA_Stage2_Box3.Shape BOX {.5*FPGA_Stage2_Box3_Width} {.5*FPGA_Stage2_Box3_Length} {.5*FPGA_Stage2_Box3_Height}
+FPGA_Stage2_Box3.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Pin_Width_Offset - .5*FPGA_Pin_Width - .5*FPGA_Pin_Width_Spacing + .5*FPGA_Stage2_Width - FPGA_Stage2_Box3_Width_Offset - .5*FPGA_Stage2_Box3_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Pin_Length_Offset - FPGA_Stage2_Length_Offset + FPGA_Stage2_Box3_Length_Offset + .5*FPGA_Stage2_Box3_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + FPGA_Pin_Middle_Height + FPGA_Stage2_Height + .5*FPGA_Stage2_Box3_Height}
+FPGA_Stage2_Box3.Mother World
+
+Constant FPGA_Stage2_Box4_Width 0.9906
+Constant FPGA_Stage2_Box4_Length 0.9906
+Constant FPGA_Stage2_Box4_Height 0.127
+Constant FPGA_Stage2_Box4_Width_Offset 0.3556
+Constant FPGA_Stage2_Box4_Length_Offset 3.4798
+
+Volume FPGA_Stage2_Box4
+FPGA_Stage2_Box4.Material PBT
+FPGA_Stage2_Box4.Visibility {ShowPayload}
+FPGA_Stage2_Box4.Shape BOX {.5*FPGA_Stage2_Box4_Width} {.5*FPGA_Stage2_Box4_Length} {.5*FPGA_Stage2_Box4_Height}
+FPGA_Stage2_Box4.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Pin_Width_Offset - .5*FPGA_Pin_Width - .5*FPGA_Pin_Width_Spacing + .5*FPGA_Stage2_Width - FPGA_Stage2_Box4_Width_Offset - .5*FPGA_Stage2_Box4_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Pin_Length_Offset - FPGA_Stage2_Length_Offset + FPGA_Stage2_Box4_Length_Offset + .5*FPGA_Stage2_Box4_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + FPGA_Pin_Middle_Height + FPGA_Stage2_Height + .5*FPGA_Stage2_Box4_Height}
+FPGA_Stage2_Box4.Mother World
+
+Constant FPGA_Stage2_Box5_Width 0.889
+Constant FPGA_Stage2_Box5_Length 0.889
+Constant FPGA_Stage2_Box5_Height 0.1016
+Constant FPGA_Stage2_Box5_Width_Offset 0.4572
+Constant FPGA_Stage2_Box5_Length_Offset 5.3848
+
+Volume FPGA_Stage2_Box5
+FPGA_Stage2_Box5.Material PBT
+FPGA_Stage2_Box5.Visibility {ShowPayload}
+FPGA_Stage2_Box5.Shape BOX {.5*FPGA_Stage2_Box5_Width} {.5*FPGA_Stage2_Box5_Length} {.5*FPGA_Stage2_Box5_Height}
+FPGA_Stage2_Box5.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Pin_Width_Offset - .5*FPGA_Pin_Width - .5*FPGA_Pin_Width_Spacing + .5*FPGA_Stage2_Width - FPGA_Stage2_Box5_Width_Offset - .5*FPGA_Stage2_Box5_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Pin_Length_Offset - FPGA_Stage2_Length_Offset + FPGA_Stage2_Box5_Length_Offset + .5*FPGA_Stage2_Box5_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + FPGA_Pin_Middle_Height + FPGA_Stage2_Height + .5*FPGA_Stage2_Box5_Height}
+FPGA_Stage2_Box5.Mother World
+
+Constant FPGA_Stage2_Box6_Width 0.762
+Constant FPGA_Stage2_Box6_Length 0.4826
+Constant FPGA_Stage2_Box6_Height 0.2286
+Constant FPGA_Stage2_Box6_Width_Offset 0.508
+Constant FPGA_Stage2_Box6_Length_Offset 6.5786
+
+Volume FPGA_Stage2_Box6
+FPGA_Stage2_Box6.Material PBT
+FPGA_Stage2_Box6.Visibility {ShowPayload}
+FPGA_Stage2_Box6.Shape BOX {.5*FPGA_Stage2_Box6_Width} {.5*FPGA_Stage2_Box6_Length} {.5*FPGA_Stage2_Box6_Height}
+FPGA_Stage2_Box6.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_Pin_Width_Offset - .5*FPGA_Pin_Width - .5*FPGA_Pin_Width_Spacing + .5*FPGA_Stage2_Width - FPGA_Stage2_Box6_Width_Offset - .5*FPGA_Stage2_Box6_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_Pin_Length_Offset - FPGA_Stage2_Length_Offset + FPGA_Stage2_Box6_Length_Offset + .5*FPGA_Stage2_Box6_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_Depth + FPGA_Pin_Middle_Height + FPGA_Stage2_Height + .5*FPGA_Stage2_Box6_Height}
+FPGA_Stage2_Box6.Mother World
+
+Constant FPGA_UnderBox1_Width 0.3048
+Constant FPGA_UnderBox1_Length 0.4318
+Constant FPGA_UnderBox1_Height 0.4318
+Constant FPGA_UnderBox1_Width_Offset 5.7404
+Constant FPGA_UnderBox1_Length_Offset 0.508
+Constant FPGA_UnderBox1_Length_Spacing 2.3368
+
+Volume FPGA_UnderBox1a
+FPGA_UnderBox1a.Material PBT
+FPGA_UnderBox1a.Visibility {ShowPayload}
+FPGA_UnderBox1a.Shape BOX {.5*FPGA_UnderBox1_Width} {.5*FPGA_UnderBox1_Length} {.5*FPGA_UnderBox1_Height}
+FPGA_UnderBox1a.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_UnderBox1_Width_Offset - .5*FPGA_UnderBox1_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_UnderBox1_Length_Offset + .5*FPGA_UnderBox1_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height - .5*FPGA_UnderBox1_Height}
+FPGA_UnderBox1a.Mother World
+
+Volume FPGA_UnderBox1b
+FPGA_UnderBox1b.Material PBT
+FPGA_UnderBox1b.Visibility {ShowPayload}
+FPGA_UnderBox1b.Shape BOX {.5*FPGA_UnderBox1_Width} {.5*FPGA_UnderBox1_Length} {.5*FPGA_UnderBox1_Height}
+FPGA_UnderBox1b.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_UnderBox1_Width_Offset - .5*FPGA_UnderBox1_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_UnderBox1_Length_Offset + .5*FPGA_UnderBox1_Length + FPGA_UnderBox1_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height - .5*FPGA_UnderBox1_Height}
+FPGA_UnderBox1b.Mother World
+
+Volume FPGA_UnderBox1c
+FPGA_UnderBox1c.Material PBT
+FPGA_UnderBox1c.Visibility {ShowPayload}
+FPGA_UnderBox1c.Shape BOX {.5*FPGA_UnderBox1_Width} {.5*FPGA_UnderBox1_Length} {.5*FPGA_UnderBox1_Height}
+FPGA_UnderBox1c.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_UnderBox1_Width_Offset - .5*FPGA_UnderBox1_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_UnderBox1_Length_Offset + .5*FPGA_UnderBox1_Length + 2*FPGA_UnderBox1_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height - .5*FPGA_UnderBox1_Height}
+FPGA_UnderBox1c.Mother World
+
+Constant FPGA_UnderBox2_Width 0.889
+Constant FPGA_UnderBox2_Length 0.8128
+Constant FPGA_UnderBox2_Height 0.4572
+Constant FPGA_UnderBox2_Width_Offset 0.9144
+Constant FPGA_UnderBox2_Length_Offset 2.0574
+
+Volume FPGA_UnderBox2
+FPGA_UnderBox2.Material PBT
+FPGA_UnderBox2.Visibility {ShowPayload}
+FPGA_UnderBox2.Shape BOX {.5*FPGA_UnderBox2_Width} {.5*FPGA_UnderBox2_Length} {.5*FPGA_UnderBox2_Height}
+FPGA_UnderBox2.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_UnderBox2_Width_Offset - .5*FPGA_UnderBox2_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_UnderBox2_Length_Offset + .5*FPGA_UnderBox2_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height - .5*FPGA_UnderBox2_Height}
+FPGA_UnderBox2.Mother World
+
+Constant FPGA_UnderBox3_Width 0.9652
+Constant FPGA_UnderBox3_Length 0.3302
+Constant FPGA_UnderBox3_Height 0.1778
+Constant FPGA_UnderBox3_Width_Offset 3.048
+Constant FPGA_UnderBox3_Length_Offset 4.1148
+
+Volume FPGA_UnderBox3
+FPGA_UnderBox3.Material PBT
+FPGA_UnderBox3.Visibility {ShowPayload}
+FPGA_UnderBox3.Shape BOX {.5*FPGA_UnderBox3_Width} {.5*FPGA_UnderBox3_Length} {.5*FPGA_UnderBox3_Height}
+FPGA_UnderBox3.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_UnderBox3_Width_Offset - .5*FPGA_UnderBox3_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_UnderBox3_Length_Offset + .5*FPGA_UnderBox3_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height - .5*FPGA_UnderBox3_Height}
+FPGA_UnderBox3.Mother World
+
+Constant FPGA_UnderBox4_Width 0.5842
+Constant FPGA_UnderBox4_Length 0.2794
+Constant FPGA_UnderBox4_Height 0.1778
+Constant FPGA_UnderBox4_Width_Offset 0.9144
+Constant FPGA_UnderBox4_Length_Offset 4.8768
+Constant FPGA_UnderBox4_Length_Spacing 1.4732
+
+Volume FPGA_UnderBox4a
+FPGA_UnderBox4a.Material PBT
+FPGA_UnderBox4a.Visibility {ShowPayload}
+FPGA_UnderBox4a.Shape BOX {.5*FPGA_UnderBox4_Width} {.5*FPGA_UnderBox4_Length} {.5*FPGA_UnderBox4_Height}
+FPGA_UnderBox4a.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_UnderBox4_Width_Offset - .5*FPGA_UnderBox4_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_UnderBox4_Length_Offset + .5*FPGA_UnderBox4_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height - .5*FPGA_UnderBox4_Height}
+FPGA_UnderBox4a.Mother World
+
+Volume FPGA_UnderBox4b
+FPGA_UnderBox4b.Material PBT
+FPGA_UnderBox4b.Visibility {ShowPayload}
+FPGA_UnderBox4b.Shape BOX {.5*FPGA_UnderBox4_Width} {.5*FPGA_UnderBox4_Length} {.5*FPGA_UnderBox4_Height}
+FPGA_UnderBox4b.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + FPGA_Width - FPGA_UnderBox4_Width_Offset - .5*FPGA_UnderBox4_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - Bottom_Short_Screw_Length_Spacing - .5*FPGA_Length + FPGA_UnderBox4_Length_Offset + .5*FPGA_UnderBox4_Length + FPGA_UnderBox4_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height - .5*FPGA_UnderBox4_Height}
+FPGA_UnderBox4b.Mother World
+
+######################################################################################
+
+Constant HV_Box1_Width 0.3048
+Constant HV_Box1_Length 0.4318
+Constant HV_Box1_Height 0.4318
+Constant HV_Box1_Width_Offset 5.7404
+Constant HV_Box1_Length_Offset 0.508
+Constant HV_Box1_Length_Spacing 1.4605
+
+Volume HV_Box1a
+HV_Box1a.Material PBT
+HV_Box1a.Visibility {ShowPayload}
+HV_Box1a.Shape BOX {.5*HV_Box1_Width} {.5*HV_Box1_Length} {.5*HV_Box1_Height}
+HV_Box1a.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Box1_Width_Offset - .5*HV_Box1_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Box1_Length_Offset + .5*HV_Box1_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Box1_Height}
+HV_Box1a.Mother World
+
+Volume HV_Box1b
+HV_Box1b.Material PBT
+HV_Box1b.Visibility {ShowPayload}
+HV_Box1b.Shape BOX {.5*HV_Box1_Width} {.5*HV_Box1_Length} {.5*HV_Box1_Height}
+HV_Box1b.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Box1_Width_Offset - .5*HV_Box1_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Box1_Length_Offset + .5*HV_Box1_Length + HV_Box1_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Box1_Height}
+HV_Box1b.Mother World
+
+Volume HV_Box1c
+HV_Box1c.Material PBT
+HV_Box1c.Visibility {ShowPayload}
+HV_Box1c.Shape BOX {.5*HV_Box1_Width} {.5*HV_Box1_Length} {.5*HV_Box1_Height}
+HV_Box1c.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Box1_Width_Offset - .5*HV_Box1_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Box1_Length_Offset + .5*HV_Box1_Length + 2*HV_Box1_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Box1_Height}
+HV_Box1c.Mother World
+
+Constant HV_Box2_Width 0.3048
+Constant HV_Box2_Length 0.54102
+Constant HV_Box2_Height 0.4318
+Constant HV_Box2_Width_Offset 5.7404
+Constant HV_Box2_Length_Offset 1.22174
+Constant HV_Box2_Length_Spacing 1.4605
+
+Volume HV_Box2a
+HV_Box2a.Material PBT
+HV_Box2a.Visibility {ShowPayload}
+HV_Box2a.Shape BOX {.5*HV_Box2_Width} {.5*HV_Box2_Length} {.5*HV_Box2_Height}
+HV_Box2a.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Box2_Width_Offset - .5*HV_Box2_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Box2_Length_Offset + .5*HV_Box2_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Box2_Height}
+HV_Box2a.Mother World
+
+Volume HV_Box2b
+HV_Box2b.Material PBT
+HV_Box2b.Visibility {ShowPayload}
+HV_Box2b.Shape BOX {.5*HV_Box2_Width} {.5*HV_Box2_Length} {.5*HV_Box2_Height}
+HV_Box2b.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Box2_Width_Offset - .5*HV_Box2_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Box2_Length_Offset + .5*HV_Box2_Length + HV_Box2_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Box2_Height}
+HV_Box2b.Mother World
+
+Volume HV_Box2c
+HV_Box2c.Material PBT
+HV_Box2c.Visibility {ShowPayload}
+HV_Box2c.Shape BOX {.5*HV_Box2_Width} {.5*HV_Box2_Length} {.5*HV_Box2_Height}
+HV_Box2c.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Box2_Width_Offset - .5*HV_Box2_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Box2_Length_Offset + .5*HV_Box2_Length + 2*HV_Box2_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Box2_Height}
+HV_Box2c.Mother World
+
+Constant HV_Box3_Width 0.60706
+Constant HV_Box3_Length 0.32004
+Constant HV_Box3_Height 0.06604
+Constant HV_Box3_Width_Offset 4.93014
+Constant HV_Box3_Length_Offset 2.0066
+Constant HV_Box3_Length_Spacing 0.59944
+
+Volume HV_Box3a
+HV_Box3a.Material PBT
+HV_Box3a.Visibility {ShowPayload}
+HV_Box3a.Shape BOX {.5*HV_Box3_Width} {.5*HV_Box3_Length} {.5*HV_Box3_Height}
+HV_Box3a.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Box3_Width_Offset - .5*HV_Box3_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Box3_Length_Offset + .5*HV_Box3_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Box3_Height}
+HV_Box3a.Mother World
+
+Volume HV_Box3b
+HV_Box3b.Material PBT
+HV_Box3b.Visibility {ShowPayload}
+HV_Box3b.Shape BOX {.5*HV_Box3_Width} {.5*HV_Box3_Length} {.5*HV_Box3_Height}
+HV_Box3b.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Box3_Width_Offset - .5*HV_Box3_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Box3_Length_Offset + .5*HV_Box3_Length + HV_Box3_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Box3_Height}
+HV_Box3b.Mother World
+
+Volume HV_Box3c
+HV_Box3c.Material PBT
+HV_Box3c.Visibility {ShowPayload}
+HV_Box3c.Shape BOX {.5*HV_Box3_Width} {.5*HV_Box3_Length} {.5*HV_Box3_Height}
+HV_Box3c.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Box3_Width_Offset - .5*HV_Box3_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Box3_Length_Offset + .5*HV_Box3_Length + 2*HV_Box3_Length_Spacing} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Box3_Height}
+HV_Box3c.Mother World
+
+Constant HV_Box4_Width 2.54
+Constant HV_Box4_Length 2.032
+Constant HV_Box4_Height 1.1049
+Constant HV_Box4_Width_Offset 2.19456
+Constant HV_Box4_Length_Offset 1.23952
+
+Volume HV_Box4
+HV_Box4.Material PBT
+HV_Box4.Visibility {ShowPayload}
+HV_Box4.Shape BOX {.5*HV_Box4_Width} {.5*HV_Box4_Length} {.5*HV_Box4_Height}
+HV_Box4.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Box4_Width_Offset - .5*HV_Box4_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Box4_Length_Offset + .5*HV_Box4_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Box4_Height}
+HV_Box4.Mother World
+
+Constant HV_Box5_Width 0.37084
+Constant HV_Box5_Length 0.67056
+Constant HV_Box5_Height 0.18542
+Constant HV_Box5_Width_Offset 3.90652
+Constant HV_Box5_Length_Offset 3.4544
+
+Volume HV_Box5
+HV_Box5.Material PBT
+HV_Box5.Visibility {ShowPayload}
+HV_Box5.Shape BOX {.5*HV_Box5_Width} {.5*HV_Box5_Length} {.5*HV_Box5_Height}
+HV_Box5.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Box5_Width_Offset - .5*HV_Box5_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Box5_Length_Offset + .5*HV_Box5_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Box5_Height}
+HV_Box5.Mother World
+
+Constant HV_Box6_Width 0.84074
+Constant HV_Box6_Length 0.42418
+Constant HV_Box6_Height 0.47752
+Constant HV_Box6_Width_Offset 2.23012
+Constant HV_Box6_Length_Offset 4.34086
+
+Volume HV_Box6
+HV_Box6.Material PBT
+HV_Box6.Visibility {ShowPayload}
+HV_Box6.Shape BOX {.5*HV_Box6_Width} {.5*HV_Box6_Length} {.5*HV_Box6_Height}
+HV_Box6.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Box6_Width_Offset - .5*HV_Box6_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Box6_Length_Offset + .5*HV_Box6_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Box6_Height}
+HV_Box6.Mother World
+
+Constant HV_Box7_Width 0.54102
+Constant HV_Box7_Length 0.42418
+Constant HV_Box7_Height 0.47244
+Constant HV_Box7_Width_Offset 1.08204
+Constant HV_Box7_Length_Offset 4.34086
+
+Volume HV_Box7
+HV_Box7.Material PBT
+HV_Box7.Visibility {ShowPayload}
+HV_Box7.Shape BOX {.5*HV_Box7_Width} {.5*HV_Box7_Length} {.5*HV_Box7_Height}
+HV_Box7.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Box7_Width_Offset - .5*HV_Box7_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Box7_Length_Offset + .5*HV_Box7_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Box7_Height}
+HV_Box7.Mother World
+
+Constant HV_Box8_Width 0.50038
+Constant HV_Box8_Length 0.39878
+Constant HV_Box8_Height 0.1524
+Constant HV_Box8_Width_Offset 1.38938
+Constant HV_Box8_Length_Offset 3.13944
+
+Volume HV_Box8
+HV_Box8.Material PBT
+HV_Box8.Visibility {ShowPayload}
+HV_Box8.Shape BOX {.5*HV_Box8_Width} {.5*HV_Box8_Length} {.5*HV_Box8_Height}
+HV_Box8.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Box8_Width_Offset - .5*HV_Box8_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Box8_Length_Offset + .5*HV_Box8_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Box8_Height}
+HV_Box8.Mother World
+
+Constant HV_Box9_Width 0.42418
+Constant HV_Box9_Length 1.14046
+Constant HV_Box9_Height 0.39624
+Constant HV_Box9_Width_Offset 0.2921
+Constant HV_Box9_Length_Offset 1.57988
+
+Volume HV_Box9
+HV_Box9.Material PBT
+HV_Box9.Visibility {ShowPayload}
+HV_Box9.Shape BOX {.5*HV_Box9_Width} {.5*HV_Box9_Length} {.5*HV_Box9_Height}
+HV_Box9.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Box9_Width_Offset - .5*HV_Box9_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Box9_Length_Offset + .5*HV_Box9_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Box9_Height}
+HV_Box9.Mother World
+
+Constant HV_Tube1_Diameter 0.26924
+Constant HV_Tube1_Width 0.5207
+Constant HV_Tube1_Width_Offset 3.64744
+Constant HV_Tube1_Length_Offset 0.35052
+Constant HV_Tube1_Length_Offset2 0.75184
+
+Volume HV_Tube1a
+HV_Tube1a.Material PBT
+HV_Tube1a.Visibility {ShowPayload}
+HV_Tube1a.Shape TUBE 0 {.5*HV_Tube1_Diameter} {.5*HV_Tube1_Width} 0 360
+HV_Tube1a.Rotation 0 90 0
+HV_Tube1a.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Tube1_Width_Offset - .5*HV_Tube1_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Tube1_Length_Offset} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Tube1_Diameter}
+HV_Tube1a.Mother World
+
+Volume HV_Tube1b
+HV_Tube1b.Material PBT
+HV_Tube1b.Visibility {ShowPayload}
+HV_Tube1b.Shape TUBE 0 {.5*HV_Tube1_Diameter} {.5*HV_Tube1_Width} 0 360
+HV_Tube1b.Rotation 0 90 0
+HV_Tube1b.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Tube1_Width_Offset - .5*HV_Tube1_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Tube1_Length_Offset2} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Tube1_Diameter}
+HV_Tube1b.Mother World
+
+Constant HV_Tube2_Diameter 0.254
+Constant HV_Tube2_Height 0.30988
+Constant HV_Tube2_Width_Offset 1.6891
+Constant HV_Tube2_Width_Offset2 1.6891
+Constant HV_Tube2_Width_Offset3 1.97612
+Constant HV_Tube2_Length_Offset 1.94056
+Constant HV_Tube2_Length_Offset2 2.4892
+Constant HV_Tube2_Length_Offset3 3.94716
+
+Volume HV_Tube2a
+HV_Tube2a.Material PBT
+HV_Tube2a.Visibility {ShowPayload}
+HV_Tube2a.Shape TUBE 0 {.5*HV_Tube2_Diameter} {.5*HV_Tube2_Height} 0 360
+HV_Tube2a.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Tube2_Width_Offset} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Tube2_Length_Offset} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Tube2_Height}
+HV_Tube2a.Mother World
+
+Volume HV_Tube2b
+HV_Tube2b.Material PBT
+HV_Tube2b.Visibility {ShowPayload}
+HV_Tube2b.Shape TUBE 0 {.5*HV_Tube2_Diameter} {.5*HV_Tube2_Height} 0 360
+HV_Tube2b.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Tube2_Width_Offset2} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Tube2_Length_Offset3} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Tube2_Height}
+HV_Tube2b.Mother World
+
+Volume HV_Tube2c
+HV_Tube2c.Material PBT
+HV_Tube2c.Visibility {ShowPayload}
+HV_Tube2c.Shape TUBE 0 {.5*HV_Tube2_Diameter} {.5*HV_Tube2_Height} 0 360
+HV_Tube2c.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_Tube2_Width_Offset2} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_Tube2_Length_Offset3} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset + HV_Depth + .5*HV_Tube2_Height}
+HV_Tube2c.Mother World
+
+Constant HV_UnderBox1_Width 0.34544
+Constant HV_UnderBox1_Length 0.65532
+Constant HV_UnderBox1_Height 0.18542
+Constant HV_UnderBox1_Width_Offset 1.22682
+Constant HV_UnderBox1_Length_Offset 0.42164
+
+Volume HV_UnderBox1
+HV_UnderBox1.Material PBT
+HV_UnderBox1.Visibility {ShowPayload}
+HV_UnderBox1.Shape BOX {.5*HV_UnderBox1_Width} {.5*HV_UnderBox1_Length} {.5*HV_UnderBox1_Height}
+HV_UnderBox1.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_UnderBox1_Width_Offset - .5*HV_UnderBox1_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_UnderBox1_Length_Offset + .5*HV_UnderBox1_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset - .5*HV_UnderBox1_Height}
+HV_UnderBox1.Mother World
+
+Constant HV_UnderBox2_Width 0.59182
+Constant HV_UnderBox2_Length 0.33782
+Constant HV_UnderBox2_Height 0.15494
+Constant HV_UnderBox2_Width_Offset 2.19202
+Constant HV_UnderBox2_Length_Offset 0.31242
+
+Volume HV_UnderBox2
+HV_UnderBox2.Material PBT
+HV_UnderBox2.Visibility {ShowPayload}
+HV_UnderBox2.Shape BOX {.5*HV_UnderBox2_Width} {.5*HV_UnderBox2_Length} {.5*HV_UnderBox2_Height}
+HV_UnderBox2.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_UnderBox2_Width_Offset - .5*HV_UnderBox2_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_UnderBox2_Length_Offset + .5*HV_UnderBox2_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset - .5*HV_UnderBox2_Height}
+HV_UnderBox2.Mother World
+
+Constant HV_UnderBox3_Width 0.33528
+Constant HV_UnderBox3_Length 0.36576
+Constant HV_UnderBox3_Height 0.12446
+Constant HV_UnderBox3_Width_Offset 2.19202
+Constant HV_UnderBox3_Length_Offset 0.88392
+
+Volume HV_UnderBox3
+HV_UnderBox3.Material PBT
+HV_UnderBox3.Visibility {ShowPayload}
+HV_UnderBox3.Shape BOX {.5*HV_UnderBox3_Width} {.5*HV_UnderBox3_Length} {.5*HV_UnderBox3_Height}
+HV_UnderBox3.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_UnderBox3_Width_Offset - .5*HV_UnderBox3_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_UnderBox3_Length_Offset + .5*HV_UnderBox3_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset - .5*HV_UnderBox3_Height}
+HV_UnderBox3.Mother World
+
+Constant HV_UnderBox4_Width 0.49022
+Constant HV_UnderBox4_Length 0.5588
+Constant HV_UnderBox4_Height 0.28956
+Constant HV_UnderBox4_Width_Offset 3.24358
+Constant HV_UnderBox4_Length_Offset 2.22758
+
+Volume HV_UnderBox4
+HV_UnderBox4.Material PBT
+HV_UnderBox4.Visibility {ShowPayload}
+HV_UnderBox4.Shape BOX {.5*HV_UnderBox4_Width} {.5*HV_UnderBox4_Length} {.5*HV_UnderBox4_Height}
+HV_UnderBox4.Position {Wall1_x - .5*Wall1_Length + Wall_Thickness + Bottom_Short_Screw_Width_Offset + .5*Bottom_Screw_OD - FPGA_Width_Offset + HV_Width - HV_UnderBox4_Width_Offset - .5*HV_UnderBox4_Width} {Wall1_y - .5*Wall_Thickness - Bottom_Short_Screw_Length_Offset - .5*Bottom_Screw_OD - 1.5*Bottom_Short_Screw_Length_Spacing - .5*HV_Length + HV_UnderBox4_Length_Offset + .5*HV_UnderBox4_Length} {Wall1_z - .5*Wall1_Width + Wall_Thickness + Bottom_Short_Screw_Height + FPGA_HV_Offset - .5*HV_UnderBox4_Height}
+HV_UnderBox4.Mother World
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
