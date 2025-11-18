@@ -29,9 +29,9 @@ World.Mother 0
 
 Constant ShowPCB 1 		// Toggles Detector PCB Visibility
 Constant ShowPayload 1  // Toggles Payload Visibility
-Constant ShowRocket 0	// Toggles Rocket Visibility
+Constant ShowRocket 1	// Toggles Rocket Visibility
 
-#Include Rocket.geo
+Include Rocket.geo
 Include ASTEP.geo
 Include ASTEP.det
 Include Payload.geo
