@@ -110,7 +110,7 @@ Constant PDU_Offset 1.8034
 // Wall1 is going to be the side with the detector mounted
 
 Constant Wall1_x {-.5*QCLength + LayerLength - FEELength + .5*OverlapL - PCB_Screw_Offset_Length + Wall1_Offset_Length - .5*Wall1_Length}
-Constant Wall1_y {3*LayerSpacing - .5*PCBThickness - .5*QCThickness + .5*Wall_Thickness}
+Constant Wall1_y {3*LayerSpacing - .5*PCBThickness + .5*BBThickness - .5*(ChipThickness-DepletionDepth) - .5*QCThickness + .5*Wall_Thickness}
 Constant Wall1_z {-.5*QCWidth + LayerWidth - PCBLeftW + .5*OverlapW - PCB_Screw_Offset_Width + Wall1_Offset_Width - .5*Wall1_Width}
 
 Volume Wall1

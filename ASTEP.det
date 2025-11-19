@@ -10,8 +10,8 @@ AstroPix.SensitiveVolume  APS
 AstroPix.DetectorVolume   QuadChip
 AstroPix.StripNumber      35 35
 AstroPix.Offset           0.0 0.0
-AstroPix.StructuralPitch  {StructuralPitchW} {StructuralPitchL} {LayerSpacing}
-AstroPix.StructuralOffset {Guardring} {DigitalPeriphery} {ChipThickness-DepletionDepth}
+AstroPix.StructuralPitch  {StructuralPitchL} {LayerSpacing} {StructuralPitchW}
+AstroPix.StructuralOffset {DigitalPeriphery} {ChipThickness-DepletionDepth} {Guardring}
 
 AstroPix.NoiseThreshold       0.0001
 AstroPix.TriggerThreshold     0.0001

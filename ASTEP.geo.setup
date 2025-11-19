@@ -16,7 +16,7 @@
 //			Confirm location of payload housing wrt the rocket body
 // 			Add details of the payload housing from CAD model
 
-SurroundingSphere 20.0  0.0  0.0  0.0  20.0
+SurroundingSphere 50.0  0.0  0.0  0.0  50.0
 //ShowSurroundingSphere true
 Include $MEGALIB/resource/examples/geomega/materials/Materials.geo
 
