@@ -69,7 +69,7 @@ QuadChip.Material Vacuum
 QuadChip.Visibility 0
 QuadChip.Color 6
 QuadChip.Shape BOX {.5*QCLength} {.5*QCWidth} {.5*QCThickness}
-QuadChip.Position {.5*QCLength - .5*LayerLength+FEELength - .5*OverlapL} {-.5*QCWidth + .5*LayerWidth - PCBLeftW + .5*OverlapW} {.5*PCBThickness}
+QuadChip.Position {.5*QCLength - .5*LayerLength + FEELength - .5*OverlapL} {-.5*QCWidth + .5*LayerWidth - PCBLeftW + .5*OverlapW} {.5*PCBThickness}
 QuadChip.Mother SL
 
 Volume BusBar
@@ -185,23 +185,23 @@ PCB_Mount_Screw.Rotation 90 0 0
 
 For I 3 {2*LayerSpacing} {-LayerSpacing}
     SL.Copy SL_%I
-    SL_%I.Position {-.5*QCLength + .5*LayerLength - FEELength + .5*OverlapL} {$I - .5*PCBThickness + .5*BBThickness - .5*(ChipThickness-DepletionDepth)} {-.5*QCWidth + .5*LayerWidth - PCBLeftW + .5*OverlapW}
+    SL_%I.Position {-.5*QCLength + .5*LayerLength - FEELength + .5*OverlapL + .5*QCLength - .5*ActiveAreaLength - DigitalPeriphery - .5*ActiveAreaLength - .5*StructuralPitchL} {$I - .5*PCBThickness + .5*BBThickness - .5*(ChipThickness-DepletionDepth)} {-.5*QCWidth + .5*LayerWidth - PCBLeftW + .5*OverlapW}
     SL_%I.Rotation -90 0 0
     SL_%I.Mother World
     
     PCB_Mount_Screw.Copy PCB_Mount_Screw1_%I
-    PCB_Mount_Screw1_%I.Position {-.5*QCLength + LayerLength - FEELength + .5*OverlapL - PCB_Screw_Offset_Length} {$I - .5*PCBThickness + .5*BBThickness - .5*(ChipThickness-DepletionDepth) - .5*QCThickness + .5*LayerSpacing} {-.5*QCWidth + LayerWidth - PCBLeftW + .5*OverlapW - PCB_Screw_Offset_Width}
+    PCB_Mount_Screw1_%I.Position {-.5*QCLength + LayerLength - FEELength + .5*OverlapL + .5*QCLength - .5*ActiveAreaLength - DigitalPeriphery - .5*ActiveAreaLength - .5*StructuralPitchL - PCB_Screw_Offset_Length} {$I - .5*PCBThickness + .5*BBThickness - .5*(ChipThickness-DepletionDepth) - .5*QCThickness + .5*LayerSpacing} {-.5*QCWidth + LayerWidth - PCBLeftW + .5*OverlapW - PCB_Screw_Offset_Width}
 	PCB_Mount_Screw1_%I.Mother World
 	
 	PCB_Mount_Screw.Copy PCB_Mount_Screw2_%I
-    PCB_Mount_Screw2_%I.Position {-.5*QCLength + LayerLength - FEELength + .5*OverlapL - PCB_Screw_Offset_Length} {$I - .5*PCBThickness + .5*BBThickness - .5*(ChipThickness-DepletionDepth) - .5*QCThickness + .5*LayerSpacing} {-.5*QCWidth - PCBLeftW + .5*OverlapW + PCB_Screw_Offset_Width}
+    PCB_Mount_Screw2_%I.Position {-.5*QCLength + LayerLength - FEELength + .5*OverlapL + .5*QCLength - .5*ActiveAreaLength - DigitalPeriphery - .5*ActiveAreaLength - .5*StructuralPitchL - PCB_Screw_Offset_Length} {$I - .5*PCBThickness + .5*BBThickness - .5*(ChipThickness-DepletionDepth) - .5*QCThickness + .5*LayerSpacing} {-.5*QCWidth - PCBLeftW + .5*OverlapW + PCB_Screw_Offset_Width}
 	PCB_Mount_Screw2_%I.Mother World
 	
 	PCB_Mount_Screw.Copy PCB_Mount_Screw3_%I
-    PCB_Mount_Screw3_%I.Position {-.5*QCLength - FEELength + .5*OverlapL + PCB_Screw_Offset_Length} {$I - .5*PCBThickness + .5*BBThickness - .5*(ChipThickness-DepletionDepth) - .5*QCThickness + .5*LayerSpacing} {-.5*QCWidth + LayerWidth - PCBLeftW + .5*OverlapW - PCB_Screw_Offset_Width}
+    PCB_Mount_Screw3_%I.Position {-.5*QCLength - FEELength + .5*OverlapL + .5*QCLength - .5*ActiveAreaLength - DigitalPeriphery - .5*ActiveAreaLength - .5*StructuralPitchL + PCB_Screw_Offset_Length} {$I - .5*PCBThickness + .5*BBThickness - .5*(ChipThickness-DepletionDepth) - .5*QCThickness + .5*LayerSpacing} {-.5*QCWidth + LayerWidth - PCBLeftW + .5*OverlapW - PCB_Screw_Offset_Width}
 	PCB_Mount_Screw3_%I.Mother World
 	
 	PCB_Mount_Screw.Copy PCB_Mount_Screw4_%I
-    PCB_Mount_Screw4_%I.Position {-.5*QCLength - FEELength + .5*OverlapL + PCB_Screw_Offset_Length} {$I - .5*PCBThickness + .5*BBThickness - .5*(ChipThickness-DepletionDepth) - .5*QCThickness + .5*LayerSpacing} {-.5*QCWidth - PCBLeftW + .5*OverlapW + PCB_Screw_Offset_Width}
+    PCB_Mount_Screw4_%I.Position {-.5*QCLength - FEELength + .5*OverlapL + .5*QCLength - .5*ActiveAreaLength - DigitalPeriphery - .5*ActiveAreaLength - .5*StructuralPitchL + PCB_Screw_Offset_Length} {$I - .5*PCBThickness + .5*BBThickness - .5*(ChipThickness-DepletionDepth) - .5*QCThickness + .5*LayerSpacing} {-.5*QCWidth - PCBLeftW + .5*OverlapW + PCB_Screw_Offset_Width}
 	PCB_Mount_Screw4_%I.Mother World
 Done

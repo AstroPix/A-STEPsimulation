@@ -1,4 +1,5 @@
-Constant RocketMat Alu6061
+#Constant RocketMat Alu6061
+Constant RocketMat Vacuum
 
 Constant Rocket_Thickness 2.5
 Constant Rocket_Height 15
